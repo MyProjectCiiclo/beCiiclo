@@ -18,6 +18,18 @@ class AuthService
     {
         $data['password'] = Hash::make($data['password']);
 
+        if (!isset($data['role'])) {
+            $data['role'] = 'user';
+        }
+        if (!isset($data['avatar'])) {
+            $data['avatar'] = null;
+        }
+
         return $this->authRepository->createUser($data);
+    }
+
+    public function login(array $data)
+    {
+        return $this->authRepository->login($data);
     }
 }

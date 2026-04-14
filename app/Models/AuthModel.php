@@ -13,6 +13,5 @@ class AuthModel extends Model
         'email',
         'password',
         'role',
-        'avatar'
     ];
 }

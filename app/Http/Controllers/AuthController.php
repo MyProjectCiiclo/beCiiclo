@@ -17,8 +17,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users', // Thêm unique:users
             'password' => 'required|min:6|confirmed',
         ]);
 
@@ -27,6 +27,23 @@ class AuthController extends Controller
         $user = $this->authService->register($data);
         return response()->json([
             'message' => 'Success Register',
+            'user' => $user,
+        ]);
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+
+        $data = $request->only(['email', 'password']);
+
+        $user = $this->authService->login($data);
+
+        return response()->json([
+            'message' => 'Login success',
             'user' => $user,
         ]);
     }
