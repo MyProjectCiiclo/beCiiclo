@@ -21,9 +21,6 @@ class AuthService
         if (!isset($data['role'])) {
             $data['role'] = 'user';
         }
-        if (!isset($data['avatar'])) {
-            $data['avatar'] = null;
-        }
 
         return $this->authRepository->createUser($data);
     }
