@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\AuthService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -17,6 +18,11 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         
+    dd([
+        'database' => DB::connection()->getDatabaseName(),
+        'host' => config('database.connections.pgsql.host'),
+    ]);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users', // Thêm unique:users
