@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IntroController;
+use App\Http\Controllers\ProjectController;
+use App\Services\ProjectService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,4 +18,8 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
+
+// GET DATA
 Route::get('/intro', [IntroController::class, 'getIntro']);
+Route::get('/about', [AboutController::class, 'getAbout']);
+Route::get('/project', [ProjectController::class, 'getProject']);

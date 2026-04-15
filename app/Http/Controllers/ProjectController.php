@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ProjectService;
 use Illuminate\Http\Request;
-use ProjectService;
 
 class ProjectController extends Controller
 {
@@ -12,5 +12,16 @@ class ProjectController extends Controller
     public function __construct(ProjectService $projectService)
     {
         $this->projectService = $projectService;
+    }
+
+    public function getProject(){
+        $data = $this->projectService->getProjects();
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $data, 
+        ]);
+
+
     }
 }
