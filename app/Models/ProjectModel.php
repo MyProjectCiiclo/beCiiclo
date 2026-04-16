@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectModel extends Model{
-    protected $table = 'projects';
+class ProjectModel extends Model
+{
+    protected $table = 'project_experiences';
 
     protected $fillable = [
         'project_name',
@@ -15,5 +15,4 @@ class ProjectModel extends Model{
         'image',
         'project_type',
     ];
-
 }
