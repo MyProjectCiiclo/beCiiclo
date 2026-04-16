@@ -4,17 +4,20 @@ namespace App\Services;
 
 use App\Repository\ProjectRepository;
 
-class ProjectService{
+class ProjectService {
+
     protected $projectRepository;
 
-
-    public function __construct(ProjectRepository $projectRepository)
-    {
+    public function __construct(ProjectRepository $projectRepository) {
         $this->projectRepository = $projectRepository;
     }
 
-    public function getProjects()
-{
-    return $this->projectRepository->getProjects();
+    public function getAll(){
+        return $this->projectRepository->getAll();
+    }
 
-}}
+    public function createProject(array $data){
+        return $this->projectRepository->createProject($data);
+    }
+
+}

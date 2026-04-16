@@ -1,20 +1,22 @@
 <?php
-
 namespace App\Repository;
 
 use App\Models\ProjectModel;
 
-use Illuminate\Database\Eloquent\Model;
+
 class ProjectRepository{
+
     protected $projectModel;
 
-    public function __construct(ProjectModel $projectModel)
-    {
+    public function __construct(ProjectModel $projectModel){
         $this->projectModel = $projectModel;
     }
 
-    public function getProjects(){
+    public function getAll(){
         return $this->projectModel->all();
-    
+    }
+
+    public function createProject(array $data){
+        return $this->projectModel->create($data);
     }
 }

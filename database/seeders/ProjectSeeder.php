@@ -11,21 +11,32 @@ class ProjectSeeder extends Seeder
     {
         DB::table('projects')->insert([
             [
-                'title' => 'Project 1',
-                'description' => 'Demo project',
-                'image_url' => null,
-                'tags' => json_encode(['Vue', 'Tailwind']),
+                'project_name' => 'Portfolio Website',
+                'language' => 'VueJS',
+                'description' => 'Personal portfolio project',
+                'image' => null,
+                'project_type' => 'Frontend',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'title' => 'Project 2',
-                'description' => 'Another project',
-                'image_url' => null,
-                'tags' => json_encode(['React']),
+                'project_name' => 'API Backend',
+                'language' => 'Laravel',
+                'description' => 'REST API for project management',
+                'image' => null,
+                'project_type' => 'Backend',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
+            [
+                'project_name' => 'E-commerce UI',
+                'language' => 'Vue + Tailwind',
+                'description' => 'UI for shopping website',
+                'image' => null,
+                'project_type' => 'UI/UX',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
