@@ -14,6 +14,5 @@ class ProjectModel extends Model{
         'description',
         'image',
         'project_type',
-    ];
 
 }

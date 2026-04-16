@@ -3,6 +3,7 @@ namespace App\Repository;
 
 use App\Models\ProjectModel;
 
+
 class ProjectRepository{
 
     protected $projectModel;
@@ -18,5 +19,4 @@ class ProjectRepository{
     public function createProject(array $data){
         return $this->projectModel->create($data);
     }
-
 }
