@@ -2,7 +2,6 @@
 namespace App\Repository;
 
 use App\Models\ProjectExperiencesModel;
-
 class ProjectRepository{
 
     protected $projectModel;
@@ -18,5 +17,4 @@ class ProjectRepository{
     public function createProject(array $data){
         return $this->projectModel->create($data);
     }
-
 }

@@ -14,15 +14,15 @@ class ProjectController extends Controller
         $this->projectService = $projectService;
     }
 
-
-    public function index(Request $request)
+    public function index()
     {
-        return response()->json($this->projectService->getAll());
+        return response()->json(
+            $this->projectService->getAll()
+        );
     }
 
     public function createProject(Request $request)
     {
-
         $request->validate([
             'project_name' => 'required|string|max:255',
             'language' => 'required|string|max:255',
@@ -31,14 +31,21 @@ class ProjectController extends Controller
             'project_type' => 'required|string|max:255',
         ]);
 
-        $data = $request->only(['project_name', 'language', 'description', 'image', 'project_type']);
+        $data = $request->only([
+            'project_name',
+            'language',
+            'description',
+            'image',
+            'project_type'
+        ]);
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time().'_'.$file->getClientOriginalName();
             $path = $file->storeAs('projects', $filename, 'public');
             $data['image'] = $path;
         }
+
         $project = $this->projectService->createProject($data);
 
         return response()->json([

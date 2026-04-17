@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Repository\ProjectRepository;
 
-
 class ProjectService {
 
     protected $projectRepository;
