@@ -2,11 +2,8 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\IntroController;
 use App\Http\Controllers\ProjectExperiencesController;
-use App\Services\ProjectService;
-
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +22,7 @@ Route::prefix('project')->group(function () {
     Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
 });
 
+Route::get('/run-migrate', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Migrated!';
+});
