@@ -25,7 +25,3 @@ Route::prefix('project')->group(function () {
     Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
 });
 
-Route::get('/run-migrate', function () {
-    \Artisan::call('migrate', ['--force' => true]);
-    return 'Migrated!';
-});
