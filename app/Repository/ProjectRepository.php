@@ -1,14 +1,14 @@
 <?php
 namespace App\Repository;
 
-use App\Models\ProjectModel;
+use App\Models\ProjectExperiencesModel;
 
 
 class ProjectRepository{
 
     protected $projectModel;
 
-    public function __construct(ProjectModel $projectModel){
+    public function __construct(ProjectExperiencesModel $projectModel){
         $this->projectModel = $projectModel;
     }
 
