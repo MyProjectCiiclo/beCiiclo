@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             IntroSeeder::class,
             AboutSeeder::class,
-            ProjectSeeder::class,
+            ProjectExperiencesSeeder::class,
         ]);
     }
 }

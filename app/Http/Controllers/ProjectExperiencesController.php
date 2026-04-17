@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ProjectService;
+use App\Services\ProjectExperiencesService;
 use Illuminate\Http\Request;
 
-class ProjectController extends Controller
+class ProjectExperiencesController extends Controller
 {
     protected $projectService;
 
-    public function __construct(ProjectService $projectService)
+    public function __construct(ProjectExperiencesService $projectService)
     {
         $this->projectService = $projectService;
     }
