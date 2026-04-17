@@ -56,4 +56,39 @@ class ProjectExperiencesController extends Controller
             'project' => $project,
         ]);
     }
+
+    public function updateProject(Request $request, int $id)
+    {
+
+        $request->validate([
+            'project_name' => 'required|string|max:255',
+            'language' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'project_type' => 'required|string|max:25',
+        ]);
+
+        $data = $request->only([
+            'project_name',
+            'language',
+            'description',
+            'project_type',
+        ]);
+        if ($request->hasFile('image')) {
+
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            $path = $file->storeAs('projects', $filename, 'public');
+
+            $data['image'] = $path;
+        }
+
+        $project = $this->projectService->updateProject($id, $data);
+
+        return response()->json([
+            'message' => 'Success Update',
+            'project' => $project,
+        ]);
+    }
 }

@@ -20,4 +20,8 @@ class ProjectExperiencesService {
         return $this->projectRepository->createProject($data);
     }
 
+    public function updateProject(int $id, array $data){
+        return $this->projectRepository->updateProject($id, $data);
+    }
+
 }
