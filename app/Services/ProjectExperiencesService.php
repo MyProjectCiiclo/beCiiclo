@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
+use App\Repository\ProjectExperiencesRepository;
 use App\Repository\ProjectRepository;
 
-class ProjectService {
+class ProjectExperiencesService {
 
     protected $projectRepository;
 
-    public function __construct(ProjectRepository $projectRepository) {
+    public function __construct(ProjectExperiencesRepository $projectRepository) {
         $this->projectRepository = $projectRepository;
     }
 

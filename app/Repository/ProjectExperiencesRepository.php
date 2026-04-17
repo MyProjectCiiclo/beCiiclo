@@ -2,7 +2,7 @@
 namespace App\Repository;
 
 use App\Models\ProjectExperiencesModel;
-class ProjectRepository{
+class ProjectExperiencesRepository{
 
     protected $projectModel;
 

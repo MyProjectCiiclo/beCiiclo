@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\IntroController;
+use App\Http\Controllers\ProjectExperiencesController;
 use App\Services\ProjectService;
 
 use Illuminate\Http\Request;
@@ -20,7 +21,11 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::prefix('project')->group(function () {
-    Route::get('/show-project', [ProjectController::class, 'index']);
-    Route::post('/create-project', [ProjectController::class, 'createProject']);
+    Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
+    Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
 });
 
+Route::get('/run-migrate', function () {
+    \Artisan::call('migrate', ['--force' => true]);
+    return 'Migrated!';
+});
