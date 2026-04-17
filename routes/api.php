@@ -20,7 +20,7 @@ Route::prefix('auth')->group(function () {
 Route::prefix('project')->group(function () {
     Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
     Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
-    Route::put('/update-project', [ProjectExperiencesController::class, 'updateProject']);
+    Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
 });
 
 Route::get('/run-migrate', function () {
