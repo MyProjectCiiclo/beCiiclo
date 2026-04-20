@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ProjectExperiencesService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class ProjectExperiencesController extends Controller
 {
@@ -42,11 +42,25 @@ class ProjectExperiencesController extends Controller
         if ($request->hasFile('image')) {
 
             $file = $request->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
 
-            $path = $file->storeAs('projects', $filename, 'public');
+            $response = Http::attach(
+                'file',
+                file_get_contents($file),
+                $file->getClientOriginalName()
+            )->post('https://api.cloudinary.com/v1_1/droybexbj/image/upload', [
+                'upload_preset' => 'my_preset'
+            ]);
 
-            $data['image'] = $path;
+            if (!$response->successful()) {
+                return response()->json([
+                    'error' => 'Upload failed',
+                    'detail' => $response->body()
+                ], 500);
+            }
+
+            $result = $response->json();
+
+            $data['image'] = $result['secure_url'] ?? null;
         }
 
         $project = $this->projectService->createProject($data);
@@ -77,11 +91,25 @@ class ProjectExperiencesController extends Controller
         if ($request->hasFile('image')) {
 
             $file = $request->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
 
-            $path = $file->storeAs('projects', $filename, 'public');
+            $response = Http::attach(
+                'file',
+                file_get_contents($file),
+                $file->getClientOriginalName()
+            )->post('https://api.cloudinary.com/v1_1/droybexbj/image/upload', [
+                'upload_preset' => 'my_preset'
+            ]);
 
-            $data['image'] = $path;
+            if (!$response->successful()) {
+                return response()->json([
+                    'error' => 'Upload failed',
+                    'detail' => $response->body()
+                ], 500);
+            }
+
+            $result = $response->json();
+
+            $data['image'] = $result['secure_url'] ?? null;
         }
 
         $project = $this->projectService->updateProject($id, $data);

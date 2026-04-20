@@ -18,14 +18,10 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         
-    dd([
-        'database' => DB::connection()->getDatabaseName(),
-        'host' => config('database.connections.pgsql.host'),
-    ]);
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users', // Thêm unique:users
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
 
