@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ProjectExperiencesService;
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Services\CloudinaryService;
-use Illuminate\Http\Request;
+use App\Services\ProjectExperiencesService;
 
 class ProjectExperiencesController extends Controller
 {
@@ -26,16 +27,8 @@ class ProjectExperiencesController extends Controller
         );
     }
 
-    public function createProject(Request $request)
+    public function createProject(StoreProjectRequest $request)
     {
-        $request->validate([
-            'project_name' => 'required|string|max:255',
-            'language' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'project_type' => 'required|string|max:255',
-        ]);
-
         $data = $request->only([
             'project_name',
             'language',
@@ -61,17 +54,8 @@ class ProjectExperiencesController extends Controller
             'project' => $project,
         ]);
     }
-
-    public function updateProject(Request $request, int $id)
+    public function updateProject(UpdateProjectRequest $request, int $id)
     {
-        $request->validate([
-            'project_name' => 'required|string|max:255',
-            'language' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'project_type' => 'required|string|max:25',
-        ]);
-
         $data = $request->only([
             'project_name',
             'language',
@@ -96,5 +80,18 @@ class ProjectExperiencesController extends Controller
             'message' => 'Success Update',
             'project' => $project,
         ]);
+    }
+
+    public function destroy (int $id){
+        $delete = $this->projectService->deleteProject($id);
+
+        if(!$delete){
+            return response()->json([
+                'message' => 'Project not found',
+            ],404);
+        }
+        return response()->json([
+            'message' => 'Success Delete',
+        ],204);
     }
 }
