@@ -24,4 +24,8 @@ class ProjectExperiencesService {
         return $this->projectRepository->updateProject($id, $data);
     }
 
+    public function deleteProject(int $id){
+        return $this->projectRepository->deleteProject($id);
+    }
+
 }

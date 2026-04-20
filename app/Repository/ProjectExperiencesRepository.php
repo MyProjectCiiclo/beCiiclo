@@ -36,4 +36,15 @@ class ProjectExperiencesRepository
 
         return $project;
     }
+
+    public function deleteProject(int $id)
+    {
+        $project = $this->ProjectExperiencesModel->find($id);
+
+        if(! $project){
+            return false;
+        }
+
+        return $project ->delete();
+}
 }
