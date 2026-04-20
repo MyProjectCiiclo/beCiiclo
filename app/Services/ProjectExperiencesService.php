@@ -12,8 +12,8 @@ class ProjectExperiencesService {
         $this->projectRepository = $projectRepository;
     }
 
-    public function getAll(){
-        return $this->projectRepository->getAll();
+    public function getAll($perPage = 10){
+        return $this->projectRepository->getAll($perPage);
     }
 
     public function createProject(array $data){

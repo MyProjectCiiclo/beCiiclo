@@ -14,9 +14,10 @@ class ProjectExperiencesRepository
         $this->ProjectExperiencesModel = $ProjectExperiencesModel;
     }
 
-    public function getAll()
+    public function getAll($perPage)
     {
-        return $this->ProjectExperiencesModel->all();
+        return $this->ProjectExperiencesModel->latest()
+        ->paginate($perPage);
     }
 
     public function createProject(array $data)

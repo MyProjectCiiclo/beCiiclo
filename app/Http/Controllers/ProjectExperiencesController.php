@@ -20,11 +20,27 @@ class ProjectExperiencesController extends Controller
         $this->cloudinary = $cloudinary;
     }
 
-    public function index()
-    {
-        return response()->json(
-            $this->projectService->getAll()
-        );
+    public function index(){
+        $perPage = (int) request()->get('per_page',10);
+
+        if($perPage <= 0){
+            $perPage = 10;
+        }
+        
+        $data = $this->projectService->getAll($perPage);
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $data->items(),
+            'meta'=>[
+                'current_page' => $data->currentPage(),
+                'last_page' => $data->lastPage(),
+                'per_page' => $data->perPage(),
+                'total' => $data->total(),
+            ]
+        ]);
+
+        
     }
 
     public function createProject(StoreProjectRequest $request)
@@ -82,16 +98,17 @@ class ProjectExperiencesController extends Controller
         ]);
     }
 
-    public function destroy (int $id){
+    public function destroy(int $id)
+    {
         $delete = $this->projectService->deleteProject($id);
 
-        if(!$delete){
+        if (!$delete) {
             return response()->json([
                 'message' => 'Project not found',
-            ],404);
+            ], 404);
         }
         return response()->json([
             'message' => 'Success Delete',
-        ],204);
+        ], 204);
     }
 }
