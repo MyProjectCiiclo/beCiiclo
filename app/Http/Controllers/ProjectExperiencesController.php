@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Services\ProjectExperiencesService;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class ProjectExperiencesController extends Controller
 {
     protected $projectService;
+    protected $cloudinary;
 
-    public function __construct(ProjectExperiencesService $projectService)
-    {
+    public function __construct(
+        ProjectExperiencesService $projectService,
+        CloudinaryService $cloudinary
+    ) {
         $this->projectService = $projectService;
+        $this->cloudinary = $cloudinary;
     }
 
     public function index()
@@ -40,27 +44,14 @@ class ProjectExperiencesController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-
-            $file = $request->file('image');
-
-            $response = Http::attach(
-                'file',
-                file_get_contents($file),
-                $file->getClientOriginalName()
-            )->post('https://api.cloudinary.com/v1_1/droybexbj/image/upload', [
-                'upload_preset' => 'my_preset'
-            ]);
-
-            if (!$response->successful()) {
+            try {
+                $data['image'] = $this->cloudinary->upload($request->file('image'));
+            } catch (\Exception $e) {
                 return response()->json([
                     'error' => 'Upload failed',
-                    'detail' => $response->body()
+                    'detail' => $e->getMessage()
                 ], 500);
             }
-
-            $result = $response->json();
-
-            $data['image'] = $result['secure_url'] ?? null;
         }
 
         $project = $this->projectService->createProject($data);
@@ -73,7 +64,6 @@ class ProjectExperiencesController extends Controller
 
     public function updateProject(Request $request, int $id)
     {
-
         $request->validate([
             'project_name' => 'required|string|max:255',
             'language' => 'required|string|max:255',
@@ -88,28 +78,16 @@ class ProjectExperiencesController extends Controller
             'description',
             'project_type',
         ]);
+
         if ($request->hasFile('image')) {
-
-            $file = $request->file('image');
-
-            $response = Http::attach(
-                'file',
-                file_get_contents($file),
-                $file->getClientOriginalName()
-            )->post('https://api.cloudinary.com/v1_1/droybexbj/image/upload', [
-                'upload_preset' => 'my_preset'
-            ]);
-
-            if (!$response->successful()) {
+            try {
+                $data['image'] = $this->cloudinary->upload($request->file('image'));
+            } catch (\Exception $e) {
                 return response()->json([
                     'error' => 'Upload failed',
-                    'detail' => $response->body()
+                    'detail' => $e->getMessage()
                 ], 500);
             }
-
-            $result = $response->json();
-
-            $data['image'] = $result['secure_url'] ?? null;
         }
 
         $project = $this->projectService->updateProject($id, $data);
