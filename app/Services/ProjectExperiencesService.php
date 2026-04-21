@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Services;
+
+use App\Repository\ProjectExperiencesRepository;
+
+class ProjectExperiencesService {
+
+    protected $projectRepository;
+
+    public function __construct(ProjectExperiencesRepository $projectRepository) {
+        $this->projectRepository = $projectRepository;
+    }
+
+    public function getAll($perPage = 10){
+        return $this->projectRepository->getAll($perPage);
+    }
+
+    public function createProject(array $data){
+        return $this->projectRepository->createProject($data);
+    }
+
+    public function updateProject(int $id, array $data){
+        return $this->projectRepository->updateProject($id, $data);
+    }
+
+    public function deleteProject(int $id){
+        return $this->projectRepository->deleteProject($id);
+    }
+
+}

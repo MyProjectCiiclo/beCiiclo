@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repository\AuthRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService
@@ -16,13 +17,13 @@ class AuthService
 
     public function register(array $data)
     {
+
+
+
         $data['password'] = Hash::make($data['password']);
 
         if (!isset($data['role'])) {
             $data['role'] = 'user';
-        }
-        if (!isset($data['avatar'])) {
-            $data['avatar'] = null;
         }
 
         return $this->authRepository->createUser($data);
@@ -30,6 +31,15 @@ class AuthService
 
     public function login(array $data)
     {
-        return $this->authRepository->login($data);
+        $user = $this->authRepository->findByEmail($data);
+
+        if (!$user) return null;
+
+        $token = $user->createToken('login-token')->plainTextToken;
+
+        return [
+            'token' => $token,
+            'user' => $user,
+        ];
     }
 }

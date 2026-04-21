@@ -2,45 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
     protected $authService;
-
     public function __construct(AuthService $authService)
     {
         $this->authService = $authService;
+        
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
 
-        $data = $request->only(['name', 'email', 'password']);
+       $user = $this->authService->register($request->validated());
 
-        $user = $this->authService->register($data);
         return response()->json([
             'message' => 'Success Register',
             'user' => $user,
         ]);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
 
-        $data = $request->only(['email', 'password']);
+       $user = $this->authService->login($request->validated());
 
-        $user = $this->authService->login($data);
+        if(!$user){
+            return response()->json([
+                'message' => 'Login failed',
+            ], 401);
+        }
 
         return response()->json([
             'message' => 'Login success',
