@@ -15,11 +15,12 @@ class EnsureTokenIsValid
      */
     public function handle(Request $request, Closure $next): Response
     {
-       if($request ->input('token') !== 'my-secret-token'){
-            return redirect('/login');
-       }
-       return ($next($request)); //callback function 
-    }
+        if ($request->input('token') !== 'my-secret-token') {
+            return response()->json([
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
 
-    
+        return $next($request);
+    }
 }
