@@ -15,7 +15,9 @@ class EnsureTokenIsValid
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->input('token') !== 'my-secret-token') {
+        $token = $request->bearerToken();
+
+        if ($token !== 'my-secret-token') {
             return response()->json([
                 'message' => 'Unauthenticated'
             ], 401);
