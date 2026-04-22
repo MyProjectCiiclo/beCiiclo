@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\AuthenticationException;
+
 
 class AuthController extends Controller
 {
@@ -21,7 +22,6 @@ class AuthController extends Controller
     {
 
        $user = $this->authService->register($request->validated());
-
         return response()->json([
             'message' => 'Success Register',
             'user' => $user,
@@ -34,9 +34,7 @@ class AuthController extends Controller
        $user = $this->authService->login($request->validated());
 
         if(!$user){
-            return response()->json([
-                'message' => 'Login failed',
-            ], 401);
+           throw new AuthenticationException('Invalid email or password');
         }
 
         return response()->json([
