@@ -8,16 +8,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnsureTokenIsValid
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
+        if (
+            $request->is('api/auth/register') ||
+            $request->is('api/auth/login')
+        ) {
+            return $next($request);
+        }
+
         $token = $request->bearerToken();
 
-        if ($token !== 'my-secret-token') {
+        if (!$token || $token !== 'my-secret-token') {
             return response()->json([
                 'message' => 'Unauthenticated'
             ], 401);
