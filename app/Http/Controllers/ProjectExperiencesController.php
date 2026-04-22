@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ProjectExperiencesService;
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Services\CloudinaryService;
-use Illuminate\Http\Request;
+use App\Services\ProjectExperiencesService;
 
 class ProjectExperiencesController extends Controller
 {
@@ -19,23 +20,31 @@ class ProjectExperiencesController extends Controller
         $this->cloudinary = $cloudinary;
     }
 
-    public function index()
-    {
-        return response()->json(
-            $this->projectService->getAll()
-        );
-    }
+    public function index(){
+        $perPage = (int) request()->get('per_page',10);
 
-    public function createProject(Request $request)
-    {
-        $request->validate([
-            'project_name' => 'required|string|max:255',
-            'language' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'project_type' => 'required|string|max:255',
+        if($perPage <= 0){
+            $perPage = 10;
+        }
+        
+        $data = $this->projectService->getAll($perPage);
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $data->items(),
+            'meta'=>[
+                'current_page' => $data->currentPage(),
+                'last_page' => $data->lastPage(),
+                'per_page' => $data->perPage(),
+                'total' => $data->total(),
+            ]
         ]);
 
+        
+    }
+
+    public function createProject(StoreProjectRequest $request)
+    {
         $data = $request->only([
             'project_name',
             'language',
@@ -61,17 +70,8 @@ class ProjectExperiencesController extends Controller
             'project' => $project,
         ]);
     }
-
-    public function updateProject(Request $request, int $id)
+    public function updateProject(UpdateProjectRequest $request, int $id)
     {
-        $request->validate([
-            'project_name' => 'required|string|max:255',
-            'language' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'project_type' => 'required|string|max:25',
-        ]);
-
         $data = $request->only([
             'project_name',
             'language',
@@ -96,5 +96,19 @@ class ProjectExperiencesController extends Controller
             'message' => 'Success Update',
             'project' => $project,
         ]);
+    }
+
+    public function destroy(int $id)
+    {
+        $delete = $this->projectService->deleteProject($id);
+
+        if (!$delete) {
+            return response()->json([
+                'message' => 'Project not found',
+            ], 404);
+        }
+        return response()->json([
+            'message' => 'Success Delete',
+        ], 204);
     }
 }

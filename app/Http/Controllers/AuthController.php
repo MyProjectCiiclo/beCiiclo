@@ -2,48 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\AuthenticationException;
+
 
 class AuthController extends Controller
 {
     protected $authService;
-
     public function __construct(AuthService $authService)
     {
         $this->authService = $authService;
+        
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
-        $data = $request->only(['name', 'email', 'password']);
-
-        $user = $this->authService->register($data);
+       $user = $this->authService->register($request->validated());
         return response()->json([
             'message' => 'Success Register',
             'user' => $user,
         ]);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
 
-        $data = $request->only(['email', 'password']);
+       $user = $this->authService->login($request->validated());
 
-        $user = $this->authService->login($data);
+        if(!$user){
+           throw new AuthenticationException('Invalid email or password');
+        }
 
         return response()->json([
             'message' => 'Login success',
