@@ -6,7 +6,6 @@ use Laravel\Sanctum\HasApiTokens;
 
 class AuthModel extends Authenticatable
 {
-    use HasApiTokens;
 
     protected $table = 'users';
 
@@ -21,4 +20,8 @@ class AuthModel extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function getJWTIdentifier(){
+        return $this->getKey();
+    }
 }
