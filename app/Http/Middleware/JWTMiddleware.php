@@ -9,15 +9,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JWTMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next)
     {
-
-        $token = $request->cookie('token');
+        $token = $request->bearerToken();
 
         if (!$token) {
             return response()->json([
@@ -26,8 +20,8 @@ class JWTMiddleware
         }
 
         try {
-            JWTAuth::setToken()->authenticate($token);
-        } catch (\Exception $e) {
+            JWTAuth::setToken($token)->authenticate();
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Unauthorized'
             ], 401);

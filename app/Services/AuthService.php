@@ -34,6 +34,7 @@ class AuthService
             'user' => $user,
         ];
     }
+
     public function login(array $data)
     {
         $user = $this->authRepository->findByEmail($data['email']);
@@ -44,9 +45,6 @@ class AuthService
 
         $token = JWTAuth::fromUser($user);
 
-        return [
-            'token' => $token,
-            'user' => $user,
-        ];
+        return $token;
     }
 }
