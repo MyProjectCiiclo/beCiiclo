@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectExperiencesController;
-use App\Http\Middleware\EnsureTokenIsValid;
+use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -10,12 +10,9 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::prefix('project')
-    ->middleware(EnsureTokenIsValid::class)
-    ->group(function () {
-
-        Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
-        Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
-        Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
-        Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
-    });
+Route::prefix('project')->middleware(JwtMiddleware::class)->group(function () {
+    Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
+    Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
+    Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
+    Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
+});

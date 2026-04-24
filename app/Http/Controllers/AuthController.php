@@ -6,8 +6,6 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\AuthenticationException;
-
 
 class AuthController extends Controller
 {
@@ -15,13 +13,12 @@ class AuthController extends Controller
     public function __construct(AuthService $authService)
     {
         $this->authService = $authService;
-        
     }
 
     public function register(RegisterRequest $request)
     {
 
-       $user = $this->authService->register($request->validated());
+        $user = $this->authService->register($request->validated());
         return response()->json([
             'message' => 'Success Register',
             'user' => $user,
@@ -30,16 +27,35 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
+        $token = $this->authService->login($request->validated());
 
-       $user = $this->authService->login($request->validated());
-
-        if(!$user){
-           throw new AuthenticationException('Invalid email or password');
+        if (!$token) {
+            throw ValidationException::withMessages([
+                'email' => ['Invalid email or password']
+            ]);
         }
 
+        return $this->respondWithToken($token);
+    }
+
+
+    public function respondWithToken($token)
+    {
+        $cookie = cookie(
+            "token",
+            $token,
+            30,
+            "/",
+            null,
+            false,
+            true,
+            false,
+            "Strict",
+        );
+
         return response()->json([
-            'message' => 'Login success',
-            'user' => $user,
-        ]);
+            'message' => 'Success Login',
+            'token' => $token
+        ])->cookie($cookie);
     }
 }
