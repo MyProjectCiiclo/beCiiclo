@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repository\AuthRepository;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService
 {
@@ -26,27 +27,22 @@ class AuthService
 
         $user = $this->authRepository->createUser($data);
 
-        $token = $user->createToken('register-token')->plainTextToken;
+        $token = JWTAuth::fromUser($user);
 
         return [
             'token' => $token,
             'user' => $user,
         ];
     }
-
     public function login(array $data)
     {
         $user = $this->authRepository->findByEmail($data['email']);
 
-        if (!$user) {
+        if (!$user || !Hash::check($data['password'], $user->password)) {
             return null;
         }
 
-        if (!Hash::check($data['password'], $user->password)) {
-            return null;
-        }
-
-        $token = $user->createToken('login-token')->plainTextToken;
+        $token = JWTAuth::fromUser($user);
 
         return [
             'token' => $token,
