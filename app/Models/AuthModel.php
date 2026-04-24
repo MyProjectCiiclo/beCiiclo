@@ -1,13 +1,12 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class AuthModel extends Authenticatable
+class AuthModel extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens;
-
     protected $table = 'users';
 
     protected $fillable = [
@@ -21,4 +20,16 @@ class AuthModel extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    // Trả về id user
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    // Thêm data vào token (hiện tại không dùng)
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }
