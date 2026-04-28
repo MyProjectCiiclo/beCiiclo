@@ -17,11 +17,15 @@ class ProjectExperiencesRepository
     public function getAll($perPage)
     {
         return $this->ProjectExperiencesModel->latest()
-        ->paginate($perPage);
+            ->paginate($perPage);
     }
 
     public function createProject(array $data)
     {
+        if (empty($data['project_name'])) {
+            throw new \Exception("Project name is required");
+        }
+
         return $this->ProjectExperiencesModel->create($data);
     }
 
@@ -42,10 +46,10 @@ class ProjectExperiencesRepository
     {
         $project = $this->ProjectExperiencesModel->find($id);
 
-        if(! $project){
+        if (! $project) {
             return false;
         }
 
-        return $project ->delete();
-}
+        return $project->delete();
+    }
 }
