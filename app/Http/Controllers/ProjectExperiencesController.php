@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Services\CloudinaryService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Services\ProjectExperiencesService;
 use Illuminate\Support\Facades\Log;
 
@@ -32,26 +33,30 @@ class ProjectExperiencesController extends Controller
                 $perPage = 10;
             }
 
-            $data = $this->projectService->getAll($perPage);
+            /** @var LengthAwarePaginator $data */
+            $data = $this->projectService->getAll($perPage); // Assuming getAll returns a Paginator instance
 
             return response()->json([
                 'message' => 'success',
                 'data' => $data->items(),
                 'meta' => [
                     'current_page' => $data->currentPage(),
-                    'last_page' => $data->lastPage(),
-                    'per_page' => $data->perPage(),
-                    'total' => $data->total(),
+                    'last_page'    => $data->lastPage(),
+                    'per_page'     => $data->perPage(),
+                    'total'        => $data->total(),
                 ]
             ]);
         } catch (\Exception $e) {
-
+            // Log the full error for server-side debugging
             Log::error('Get Project Error', [
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
 
+            // Conditional error response based on APP_DEBUG
             return response()->json([
-                'message' => 'Server Error'
+                'message' => config('app.debug') ? $e->getMessage() : 'Server Error',
+                'trace' => config('app.debug') ? $e->getTraceAsString() : null,
             ], 500);
         }
     }
@@ -69,7 +74,18 @@ class ProjectExperiencesController extends Controller
             ]);
 
             if ($request->hasFile('image')) {
-                $data['image'] = $this->cloudinary->upload($request->file('image'));
+                try {
+                    $data['image'] = $this->cloudinary->upload($request->file('image'));
+                } catch (\Exception $e) {
+                    Log::error('UPLOAD ERROR during create', [
+                        'message' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    return response()->json([
+                        'message' => 'Failed to upload image',
+                        'error' => config('app.debug') ? $e->getMessage() : 'Image upload failed',
+                    ], 500);
+                }
             }
 
             $project = $this->projectService->createProject($data);
@@ -81,63 +97,94 @@ class ProjectExperiencesController extends Controller
             return response()->json([
                 'message' => 'Success Create',
                 'project' => $project,
-            ]);
+            ], 201);
         } catch (\Exception $e) {
-
             Log::error('CREATE PROJECT ERROR', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-
             return response()->json([
-                'message' => 'ERROR',
-                'error' => $e->getMessage()
+                'message' => 'Failed to create project',
+                'error' => config('app.debug') ? $e->getMessage() : 'Server Error',
+                'trace' => config('app.debug') ? $e->getTraceAsString() : null,
             ], 500);
         }
     }
     public function updateProject(UpdateProjectRequest $request, int $id)
     {
-        $data = $request->only([
-            'project_name',
-            'language',
-            'description',
-            'project_type',
-        ]);
+        try {
+            Log::info('Update Project Request', ['id' => $id, 'data' => $request->all()]);
 
-      if ($request->hasFile('image')) {
-    try {
-        $data['image'] = $this->cloudinary->upload($request->file('image'));
-    } catch (\Exception $e) {
-        Log::error('UPLOAD ERROR', [
-            'message' => $e->getMessage()
-        ]);
+            $data = $request->only([
+                'project_name',
+                'language',
+                'description',
+                'project_type',
+            ]);
 
-        return response()->json([
-            'error' => 'Upload failed',
-            'detail' => $e->getMessage()
-        ], 500);
-    }
-}
+            if ($request->hasFile('image')) {
+                try {
+                    $data['image'] = $this->cloudinary->upload($request->file('image'));
+                } catch (\Exception $e) { // Catch specific upload errors
+                    Log::error('UPLOAD ERROR', [
+                        'message' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
 
-        $project = $this->projectService->updateProject($id, $data);
+                    return response()->json([
+                        'error' => 'Upload failed',
+                        'detail' => config('app.debug') ? $e->getMessage() : 'Image upload failed',
+                        'trace' => config('app.debug') ? $e->getTraceAsString() : null,
+                    ], 500);
+                }
+            }
 
-        return response()->json([
-            'message' => 'Success Update',
-            'project' => $project,
-        ]);
+            $project = $this->projectService->updateProject($id, $data);
+
+            Log::info('Project updated successfully', [
+                'project_id' => $project->id ?? null
+            ]);
+
+            return response()->json([
+                'message' => 'Success Update',
+                'project' => $project,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('UPDATE PROJECT ERROR', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'message' => 'Failed to update project',
+                'error' => config('app.debug') ? $e->getMessage() : 'Server Error',
+                'trace' => config('app.debug') ? $e->getTraceAsString() : null,
+            ], 500);
+        }
     }
 
     public function destroy(int $id)
     {
-        $delete = $this->projectService->deleteProject($id);
+        try {
+            $delete = $this->projectService->deleteProject($id);
 
-        if (!$delete) {
+            if (!$delete) {
+                return response()->json([
+                    'message' => 'Project not found',
+                ], 404);
+            }
             return response()->json([
-                'message' => 'Project not found',
-            ], 404);
+                'message' => 'Success Delete',
+            ], 204);
+        } catch (\Exception $e) {
+            Log::error('DELETE PROJECT ERROR', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'message' => 'Failed to delete project',
+                'error' => config('app.debug') ? $e->getMessage() : 'Server Error',
+                'trace' => config('app.debug') ? $e->getTraceAsString() : null,
+            ], 500);
         }
-        return response()->json([
-            'message' => 'Success Delete',
-        ], 204);
     }
 }
