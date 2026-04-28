@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 use Pdo\Mysql;
+
 return [
 
     /*
@@ -92,7 +93,7 @@ return [
             'password' => env('DB_PASSWORD'),
             'charset' => 'utf8',
             'prefix' => '',
-            'search_path' => 'public',
+            'schema' => 'public',
             'sslmode' => 'require',
         ],
         'sqlsrv' => [

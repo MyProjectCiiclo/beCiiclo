@@ -16,7 +16,8 @@ class ProjectExperiencesRepository
 
     public function getAll($perPage)
     {
-        return $this->ProjectExperiencesModel->latest()
+        return $this->ProjectExperiencesModel
+            ->orderBy('id', 'desc')
             ->paginate($perPage);
     }
 
