@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -13,6 +14,10 @@ class JWTMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
+        if (!$request->header('Authorization')) {
+            return response()->json(['message' => 'Token not found'], 401);
+        }
+Log::info($request->header('Authorization'));
         try {
             $user = JWTAuth::parseToken()->authenticate();
 
