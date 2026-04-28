@@ -90,7 +90,8 @@ class ProjectExperiencesController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Server Error'
+                'message' => 'ERROR',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
@@ -103,16 +104,20 @@ class ProjectExperiencesController extends Controller
             'project_type',
         ]);
 
-        if ($request->hasFile('image')) {
-            try {
-                $data['image'] = $this->cloudinary->upload($request->file('image'));
-            } catch (\Exception $e) {
-                return response()->json([
-                    'error' => 'Upload failed',
-                    'detail' => $e->getMessage()
-                ], 500);
-            }
-        }
+      if ($request->hasFile('image')) {
+    try {
+        $data['image'] = $this->cloudinary->upload($request->file('image'));
+    } catch (\Exception $e) {
+        Log::error('UPLOAD ERROR', [
+            'message' => $e->getMessage()
+        ]);
+
+        return response()->json([
+            'error' => 'Upload failed',
+            'detail' => $e->getMessage()
+        ], 500);
+    }
+}
 
         $project = $this->projectService->updateProject($id, $data);
 
