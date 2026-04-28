@@ -24,15 +24,11 @@ class JwtMiddleware
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
-
-        } catch (TokenExpiredException $e) {
-            return response()->json(['message' => 'Token expired'], 401);
-
-        } catch (TokenInvalidException $e) {
-            return response()->json(['message' => 'Token invalid'], 401);
-
-        } catch (JWTException $e) {
-            return response()->json(['message' => 'Token error'], 401);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Auth error',
+                'error' => $e->getMessage()
+            ], 401);
         }
 
         return $next($request);
