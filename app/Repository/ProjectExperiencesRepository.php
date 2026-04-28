@@ -17,6 +17,7 @@ class ProjectExperiencesRepository
     public function getAll($perPage)
     {
         return $this->ProjectExperiencesModel
+            ->select('id', 'project_name', 'language', 'description', 'image', 'project_type', 'user_id')
             ->orderBy('id', 'desc')
             ->paginate($perPage);
     }

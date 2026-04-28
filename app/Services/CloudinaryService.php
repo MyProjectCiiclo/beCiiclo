@@ -15,14 +15,21 @@ class CloudinaryService
             throw new \Exception('Cloudinary cloud name is missing');
         }
 
+        if (!$file || !$file->isValid()) {
+            throw new \Exception('Invalid file upload');
+        }
+
         try {
-            $response = Http::timeout(30)->attach(
-                'file',
-                file_get_contents($file->getRealPath()),
-                $file->getClientOriginalName()
-            )->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
-                'upload_preset' => 'my_preset'
-            ]);
+            $response = Http::timeout(30)
+                ->attach(
+                    'file',
+                    $file->getContent(),
+                    $file->getClientOriginalName()
+                )
+                ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
+                    // ⚠️ QUAN TRỌNG: đổi đúng preset của bạn
+                    'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET', 'my_preset')
+                ]);
 
             Log::info('Cloudinary response', [
                 'status' => $response->status(),
