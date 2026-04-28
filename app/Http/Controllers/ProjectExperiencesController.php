@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\ProjectExperiencesModel;
 use App\Services\CloudinaryService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Services\ProjectExperiencesService;
@@ -26,7 +27,7 @@ class ProjectExperiencesController extends Controller
     {
         try {
             Log::info('Get Projects');
-
+dd(ProjectExperiencesModel::all());
             $perPage = (int) request()->get('per_page', 10);
 
             if ($perPage <= 0) {

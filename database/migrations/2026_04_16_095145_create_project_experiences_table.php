@@ -26,7 +26,7 @@ return new class extends Migration
                 'Fullstack',
                 'UI/UX'
             ]);
-
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
     }
