@@ -174,7 +174,7 @@ class ProjectExperiencesController extends Controller
             }
             return response()->json([
                 'message' => 'Success Delete',
-            ], 204);
+            ]);
         } catch (\Exception $e) {
             Log::error('DELETE PROJECT ERROR', [
                 'message' => $e->getMessage(),
