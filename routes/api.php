@@ -11,7 +11,15 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::prefix('project')->middleware(JwtMiddleware::class)->group(function () {
+// Route::prefix('project')->middleware(JwtMiddleware::class)->group(function () {
+//     Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
+//     Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
+//     Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
+//     Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
+// });
+
+
+Route::prefix('project')->group(function () {
     Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
     Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
     Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
