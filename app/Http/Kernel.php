@@ -27,7 +27,7 @@ class Kernel extends HttpKernel
         ],
     ];
 
-    protected $middlewareAliases = [
-        'jwt' => \App\Http\Middleware\JWTMiddleware::class,
+    protected $routeMiddleware = [
+        'jwt' => \App\Http\Middleware\JwtMiddleware::class,
     ];
 }
