@@ -15,20 +15,29 @@ class JwtMiddleware
     public function handle(Request $request, Closure $next)
     {
         try {
-            if (!$request->bearerToken()) {
+            $token = $request->bearerToken();
+
+            if (!$token || $token === 'null' || $token === 'undefined') {
                 return response()->json(['message' => 'Token not found'], 401);
             }
 
-            $user = JWTAuth::parseToken()->authenticate();
+            $user = JWTAuth::setToken($token)->authenticate();
 
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
+
+        } catch (TokenExpiredException $e) {
+            return response()->json(['message' => 'Token expired'], 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json(['message' => 'Token invalid'], 401);
+        } catch (JWTException $e) {
+            return response()->json(['message' => 'JWT error'], 401);
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Auth error',
                 'error' => $e->getMessage()
-            ], 401);
+            ], 500);
         }
 
         return $next($request);
