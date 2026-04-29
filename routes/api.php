@@ -20,5 +20,7 @@ Route::prefix('project')->middleware(JwtMiddleware::class)->group(function () {
 
 
 Route::get('/test-db', function () {
-    return DB::connection()->getPdo();
+    return response()->json([
+        'status' => 'ok'
+    ]);
 });
