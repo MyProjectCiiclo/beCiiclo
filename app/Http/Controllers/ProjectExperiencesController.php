@@ -8,6 +8,7 @@ use App\Services\CloudinaryService;
 use App\Services\ProjectExperiencesService;
 use Illuminate\Support\Facades\Log;
 use Throwable;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectExperiencesController extends Controller
 {
@@ -48,11 +49,15 @@ class ProjectExperiencesController extends Controller
                 'trace'   => $e->getTraceAsString()
             ]);
 
-            return response()->json([
-                'message' => $e->getMessage(),
-                'file'    => $e->getFile(),
-                'line'    => $e->getLine(),
-            ], 500);
+            $response = ['message' => 'Internal Server Error'];
+
+            if (config('app.debug')) {
+                $response['error'] = $e->getMessage();
+                $response['file'] = $e->getFile();
+                $response['line'] = $e->getLine();
+            }
+
+            return response()->json($response, 500);
         }
     }
 
@@ -65,7 +70,13 @@ class ProjectExperiencesController extends Controller
                 'description',
                 'project_type'
             ]);
+            if (!Auth::check()) {
+                return response()->json([
+                    'message' => 'Unauthorized'
+                ], 401);
+            }
 
+            $data['user_id'] = Auth::id();
             if ($request->hasFile('image')) {
                 $data['image'] = $this->cloudinary->upload(
                     $request->file('image')
@@ -78,7 +89,6 @@ class ProjectExperiencesController extends Controller
                 'message' => 'success',
                 'project' => $project,
             ], 201);
-
         } catch (Throwable $e) {
             Log::error('CREATE ERROR', [
                 'message' => $e->getMessage(),
@@ -86,11 +96,15 @@ class ProjectExperiencesController extends Controller
                 'line' => $e->getLine()
             ]);
 
-            return response()->json([
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-            ], 500);
+            $response = ['message' => 'Internal Server Error'];
+
+            if (config('app.debug')) {
+                $response['error'] = $e->getMessage();
+                $response['file'] = $e->getFile();
+                $response['line'] = $e->getLine();
+            }
+
+            return response()->json($response, 500);
         }
     }
 
@@ -116,7 +130,6 @@ class ProjectExperiencesController extends Controller
                 'message' => 'success',
                 'project' => $project,
             ]);
-
         } catch (Throwable $e) {
             Log::error('UPDATE ERROR', [
                 'message' => $e->getMessage(),
@@ -124,11 +137,15 @@ class ProjectExperiencesController extends Controller
                 'line' => $e->getLine()
             ]);
 
-            return response()->json([
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-            ], 500);
+            $response = ['message' => 'Internal Server Error'];
+
+            if (config('app.debug')) {
+                $response['error'] = $e->getMessage();
+                $response['file'] = $e->getFile();
+                $response['line'] = $e->getLine();
+            }
+
+            return response()->json($response, 500);
         }
     }
 
@@ -146,7 +163,6 @@ class ProjectExperiencesController extends Controller
             return response()->json([
                 'message' => 'success'
             ]);
-
         } catch (Throwable $e) {
             Log::error('DELETE ERROR', [
                 'message' => $e->getMessage(),
@@ -154,11 +170,15 @@ class ProjectExperiencesController extends Controller
                 'line' => $e->getLine()
             ]);
 
-            return response()->json([
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-            ], 500);
+            $response = ['message' => 'Internal Server Error'];
+
+            if (config('app.debug')) {
+                $response['error'] = $e->getMessage();
+                $response['file'] = $e->getFile();
+                $response['line'] = $e->getLine();
+            }
+
+            return response()->json($response, 500);
         }
     }
 }
