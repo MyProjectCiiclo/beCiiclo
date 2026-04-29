@@ -23,12 +23,11 @@ class CloudinaryService
             $response = Http::timeout(30)
                 ->attach(
                     'file',
-                    $file->getContent(),
+                    fopen($file->getRealPath(), 'r'),
                     $file->getClientOriginalName()
                 )
                 ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
-                    // ⚠️ QUAN TRỌNG: đổi đúng preset của bạn
-                    'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET', 'my_preset')
+                    'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET')
                 ]);
 
             Log::info('Cloudinary response', [
@@ -43,7 +42,6 @@ class CloudinaryService
             $result = $response->json();
 
             return $result['secure_url'] ?? null;
-
         } catch (\Exception $e) {
             Log::error('Cloudinary upload error', [
                 'message' => $e->getMessage()
