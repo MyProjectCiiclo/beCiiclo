@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectExperiencesController;
 use App\Http\Middleware\JwtMiddleware;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -15,4 +16,9 @@ Route::prefix('project')->middleware(JwtMiddleware::class)->group(function () {
     Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
     Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
     Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
+});
+
+
+Route::get('/test-db', function () {
+    return DB::connection()->getPdo();
 });
