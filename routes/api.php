@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectExperiencesController;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,7 @@ Route::prefix('project')->group(function () {
     Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
 });
 
+Route::get('/profile', [ProfileController::class, 'index']);
 
 Route::get('/test-db', function () {
     return response()->json([
