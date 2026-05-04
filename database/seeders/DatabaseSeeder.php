@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             IntroSeeder::class,
             AboutSeeder::class,
             ProjectExperiencesSeeder::class,
+            ProfileSeeder::class
         ]);
     }
 }
