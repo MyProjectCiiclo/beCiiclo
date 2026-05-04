@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectExperiencesController;
 use App\Http\Middleware\JwtMiddleware;
@@ -28,6 +29,7 @@ Route::prefix('project')->group(function () {
 });
 
 Route::get('/profile', [ProfileController::class, 'index']);
+Route::post('/contact', [ContactController::class, 'store']);
 
 Route::get('/test-db', function () {
     return response()->json([
