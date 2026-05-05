@@ -34,7 +34,7 @@ Route::get('/profile', [ProfileController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store']);
 Route::get('/work-experiences', [WorkExperienceController::class, 'index']);
 Route::get('/github/contributions', [GithubController::class, 'getContributions']);
-
+Route::get('/github/user', [GithubController::class, 'getUser']);
 Route::get('/test-db', function () {
     return response()->json([
         'status' => 'ok'
