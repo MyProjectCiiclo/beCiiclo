@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class GithubRepository
 {
+
     public function fetchContributions($username)
     {
         $token = env('GITHUB_TOKEN');

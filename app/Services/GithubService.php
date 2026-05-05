@@ -7,29 +7,32 @@ use Illuminate\Support\Facades\Http;
 
 class GithubService
 {
-    protected $repo;
+    protected $githubRepository;
 
-    public function __construct(GithubRepository $repo)
+    public function __construct(GithubRepository $githubRepository)
     {
-        $this->repo = $repo;
+        $this->githubRepository = $githubRepository;
     }
 
     public function getContributions($username)
     {
-        $data = $this->repo->fetchContributions($username);
+        $data = $this->githubRepository->fetchContributions($username);
 
-        if (!isset($data['data']['user'])) {
-            return null;
+        if (!isset($data['totalContributions'])) {
+            return [
+                'total' => 0,
+                'weeks' => []
+            ];
         }
 
         return [
-            'total' => $data['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions'],
-            'weeks' => $data['data']['user']['contributionsCollection']['contributionCalendar']['weeks']
+            'total' => $data['totalContributions'],
+            'weeks' => $data['weeks']
         ];
     }
 
     public function getUser($username)
     {
-        return $this->repo->getUser($username);
+        return $this->githubRepository->getUser($username);
     }
 }
