@@ -2,36 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
 use App\Services\GithubService;
 
 class GithubController extends Controller
 {
-    protected $service;
+    protected $githubService;
 
-    public function __construct(GithubService $service)
+    public function __construct(GithubService $githubService)
     {
-        $this->service = $service;
+        $this->githubService = $githubService;
     }
 
     public function getContributions()
     {
-        $username = "KimThanh1801";
-
-        $result = $this->service->getContributions($username);
-
-        if (!$result) {
-            return response()->json([
-                'error' => 'Cannot fetch GitHub contributions'
-            ], 500);
-        }
+        $result = $this->githubService->getContributions("KimThanh1801");
 
         return response()->json($result);
     }
 
     public function getUser()
     {
-        return response()->json(
-            $this->service->getUser("KimThanh1801")
-        );
+        $result = $this->githubService->getUser("KimThanh1801");
+
+        return response()->json($result);
     }
 }
