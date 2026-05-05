@@ -35,6 +35,16 @@ class GithubRepository
             'query' => $query
         ]);
 
-        return $response->json();
+        $data = $response->json();
+
+        return $data['data']['user']['contributionsCollection']['contributionCalendar'] ?? [
+            'totalContributions' => 0,
+            'weeks' => []
+        ];
+    }
+
+    public function getUser($username)
+    {
+        return Http::get("https://api.github.com/users/$username")->json();
     }
 }

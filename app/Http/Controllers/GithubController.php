@@ -27,4 +27,11 @@ class GithubController extends Controller
 
         return response()->json($result);
     }
+
+    public function getUser()
+    {
+        return response()->json(
+            $this->service->getUser("KimThanh1801")
+        );
+    }
 }

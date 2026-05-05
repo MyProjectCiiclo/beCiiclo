@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repository\GithubRepository;
+use Illuminate\Support\Facades\Http;
 
 class GithubService
 {
@@ -25,5 +26,10 @@ class GithubService
             'total' => $data['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions'],
             'weeks' => $data['data']['user']['contributionsCollection']['contributionCalendar']['weeks']
         ];
+    }
+
+    public function getUser($username)
+    {
+        return $this->repo->getUser($username);
     }
 }
