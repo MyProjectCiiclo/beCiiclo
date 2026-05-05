@@ -28,17 +28,38 @@ class ProfileSeeder extends Seeder
         ]);
 
         $skills = [
-            ['name' => 'React & Next.js', 'percent' => 95],
-            ['name' => 'Node.js & Express', 'percent' => 90],
-            ['name' => 'UI/UX Design', 'percent' => 85],
-            ['name' => 'MongoDB & PostgreSQL', 'percent' => 80],
-            ['name' => 'Docker & AWS', 'percent' => 75],
+            [
+                'name' => 'React & Next.js',
+                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+                'percent' => 95,
+            ],
+            [
+                'name' => 'Node.js & Express',
+                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+                'percent' => 90,
+            ],
+            [
+                'name' => 'UI/UX Design',
+                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
+                'percent' => 85,
+            ],
+            [
+                'name' => 'MongoDB & PostgreSQL',
+                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
+                'percent' => 80,
+            ],
+            [
+                'name' => 'Docker & AWS',
+                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
+                'percent' => 75,
+            ],
         ];
 
         foreach ($skills as $skill) {
             SkillModel::create([
                 'profile_id' => $profile->id,
                 'name' => $skill['name'],
+                'icon' => $skill['icon'],
                 'percent' => $skill['percent'],
             ]);
         }
