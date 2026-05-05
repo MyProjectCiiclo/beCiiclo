@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\GithubController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectExperiencesController;
 use App\Http\Controllers\WorkExperienceController;
@@ -32,6 +33,7 @@ Route::prefix('project')->group(function () {
 Route::get('/profile', [ProfileController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store']);
 Route::get('/work-experiences', [WorkExperienceController::class, 'index']);
+Route::get('/github/contributions', [GithubController::class, 'getContributions']);
 
 Route::get('/test-db', function () {
     return response()->json([
