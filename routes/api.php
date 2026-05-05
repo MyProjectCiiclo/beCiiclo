@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectExperiencesController;
+use App\Http\Controllers\WorkExperienceController;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::prefix('project')->group(function () {
 
 Route::get('/profile', [ProfileController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store']);
+Route::get('/work-experiences', [WorkExperienceController::class, 'index']);
 
 Route::get('/test-db', function () {
     return response()->json([
