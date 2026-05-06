@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Models\AuthModel;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthRepository
 {
@@ -20,7 +20,12 @@ class AuthRepository
     }
 
     public function findByEmail($email)
-{
-    return $this->authModel->where('email', $email)->first();
-}
+    {
+        return $this->authModel->where('email', $email)->first();
+    }
+
+    public function getUser()
+    {
+        return Auth::user();
+    }
 }

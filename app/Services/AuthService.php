@@ -46,5 +46,12 @@ class AuthService
         $token = JWTAuth::fromUser($user);
 
         return $token;
+    } 
+
+
+    public function getUser()
+    {
+        $user =$this->authRepository->getUser();
+        return $user;
     }
 }
