@@ -16,6 +16,14 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
+    public function index(){
+        $user = $this->authService->getUser();
+
+        return response()->json([
+            'message' => 'Success Get User',
+            'user' => $user,
+        ]);
+    }
     public function register(RegisterRequest $request)
     {
         $user = $this->authService->register($request->validated());
