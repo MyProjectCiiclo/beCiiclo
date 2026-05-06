@@ -28,7 +28,7 @@ class JwtMiddleware
                     'message' => 'Unauthorized'
                 ], 401);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Auth error',
                 'error' => $e->getMessage()
