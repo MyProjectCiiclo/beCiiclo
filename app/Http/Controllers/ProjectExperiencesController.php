@@ -17,10 +17,10 @@ class ProjectExperiencesController extends Controller
 
     public function __construct(
         ProjectExperiencesService $projectService,
-        CloudinaryService $cloudinary
+        // CloudinaryService $cloudinary
     ) {
         $this->projectService = $projectService;
-        $this->cloudinary = $cloudinary;
+        // $this->cloudinary = $cloudinary;
     }
     // public function index()
     // {
