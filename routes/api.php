@@ -53,3 +53,9 @@ Route::get('/test-db', function () {
         'status' => 'ok'
     ]);
 });
+
+Route::get('/deploy-check', function () {
+    return response()->json([
+        'message' => 'new deploy working'
+    ]);
+});
