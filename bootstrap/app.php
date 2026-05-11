@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'jwt_test' => \App\Http\Middleware\JwtMiddleware::class,
+            'jwt' => \App\Http\Middleware\JwtMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
