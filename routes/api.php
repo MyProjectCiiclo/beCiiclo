@@ -25,11 +25,19 @@ Route::prefix('auth')->group(function () {
 //         Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
 //     });
 
-
 Route::prefix('project')
     ->middleware('jwt')
     ->group(function () {
-        Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
+        Route::get('/show-project', function () {
+            return response()->json([
+                'message' => 'route reached'
+            ]);
+        });
+    });
+Route::prefix('project')
+    ->middleware('jwt')
+    ->group(function () {
+        // Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
         Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
         Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
         Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
