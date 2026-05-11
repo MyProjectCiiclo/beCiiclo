@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
-
-    Route::middleware('auth:api')->get('/me', [AuthController::class, 'index']);
+    Route::get('/me', [AuthController::class, 'index']);
 });
 
 Route::middleware('auth:api')->group(function () {
@@ -24,7 +23,7 @@ Route::middleware('auth:api')->group(function () {
     });
 });
 
-Route::middleware('auth:api')->group(function () {
+Route::group([], function () {
     Route::get('/profile', [ProfileController::class, 'index']);
     Route::post('/contact', [ContactController::class, 'store']);
     Route::get('/work-experiences', [WorkExperienceController::class, 'index']);
