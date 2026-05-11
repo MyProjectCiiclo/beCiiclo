@@ -16,32 +16,12 @@ Route::prefix('auth')->group(function () {
     Route::get('/me', [AuthController::class, 'index']);
 });
 
-// Route::prefix('project')
-//     ->middleware(JwtMiddleware::class)
-//     ->group(function () {
-//         Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
-//         Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
-//         Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
-//         Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
-//     });
-
-Route::prefix('project')
-    ->middleware('jwt')
-    ->group(function () {
-        Route::get('/show-project', function () {
-            return response()->json([
-                'message' => 'route reached'
-            ]);
-        });
-    });
-Route::prefix('project')
-    ->middleware('jwt')
-    ->group(function () {
-        // Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
-        Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
-        Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
-        Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
-    });
+Route::prefix('project')->group(function () {
+    Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
+    Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
+    Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
+    Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
+});
 
 Route::get('/profile', [ProfileController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store']);
@@ -51,11 +31,5 @@ Route::get('/github/user', [GithubController::class, 'getUser']);
 Route::get('/test-db', function () {
     return response()->json([
         'status' => 'ok'
-    ]);
-});
-
-Route::get('/deploy-check', function () {
-    return response()->json([
-        'message' => 'new deploy working'
     ]);
 });
