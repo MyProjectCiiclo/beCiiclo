@@ -22,43 +22,50 @@ class ProjectExperiencesController extends Controller
         $this->projectService = $projectService;
         $this->cloudinary = $cloudinary;
     }
+    // public function index()
+    // {
+    //     try {
+    //         Log::info('GET PROJECTS START');
+
+    //         $perPage = (int) request()->get('per_page', 10);
+
+    //         $data = $this->projectService->getAll($perPage);
+
+    //         return response()->json([
+    //             'message' => 'success',
+    //             'data' => $data->items(),
+    //             'meta' => [
+    //                 'current_page' => $data->currentPage(),
+    //                 'last_page'    => $data->lastPage(),
+    //                 'per_page'     => $data->perPage(),
+    //                 'total'        => $data->total(),
+    //             ]
+    //         ]);
+    //     } catch (Throwable $e) {
+    //         Log::error('INDEX ERROR', [
+    //             'message' => $e->getMessage(),
+    //             'file'    => $e->getFile(),
+    //             'line'    => $e->getLine(),
+    //             'trace'   => $e->getTraceAsString()
+    //         ]);
+
+    //         $response = ['message' => 'Internal Server Error'];
+
+    //         if (config('app.debug')) {
+    //             $response['error'] = $e->getMessage();
+    //             $response['file'] = $e->getFile();
+    //             $response['line'] = $e->getLine();
+    //         }
+
+    //         return response()->json($response, 500);
+    //     }
+    // }
+
     public function index()
     {
-        try {
-            Log::info('GET PROJECTS START');
-
-            $perPage = (int) request()->get('per_page', 10);
-
-            $data = $this->projectService->getAll($perPage);
-
-            return response()->json([
-                'message' => 'success',
-                'data' => $data->items(),
-                'meta' => [
-                    'current_page' => $data->currentPage(),
-                    'last_page'    => $data->lastPage(),
-                    'per_page'     => $data->perPage(),
-                    'total'        => $data->total(),
-                ]
-            ]);
-        } catch (Throwable $e) {
-            Log::error('INDEX ERROR', [
-                'message' => $e->getMessage(),
-                'file'    => $e->getFile(),
-                'line'    => $e->getLine(),
-                'trace'   => $e->getTraceAsString()
-            ]);
-
-            $response = ['message' => 'Internal Server Error'];
-
-            if (config('app.debug')) {
-                $response['error'] = $e->getMessage();
-                $response['file'] = $e->getFile();
-                $response['line'] = $e->getLine();
-            }
-
-            return response()->json($response, 500);
-        }
+        return response()->json([
+            'message' => 'controller ok'
+        ]);
     }
 
     public function createProject(StoreProjectRequest $request)
