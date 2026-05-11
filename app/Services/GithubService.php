@@ -28,6 +28,9 @@ class GithubService
         return [
             'total' => $data['totalContributions'],
             'weeks' => $data['weeks']
+        ];return $data['data']['user']['contributionsCollection']['contributionCalendar'] ?? [
+            'totalContributions' => 0,
+            'weeks' => []
         ];
     }
 

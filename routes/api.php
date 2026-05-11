@@ -16,12 +16,24 @@ Route::prefix('auth')->group(function () {
     Route::get('/me', [AuthController::class, 'index']);
 });
 
-Route::prefix('project')->group(function () {
-    Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
-    Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
-    Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
-    Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
-});
+// Route::prefix('project')
+//     ->middleware(JwtMiddleware::class)
+//     ->group(function () {
+//         Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
+//         Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
+//         Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
+//         Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
+//     });
+
+
+Route::prefix('project')
+    ->middleware('jwt')
+    ->group(function () {
+        Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
+        Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
+        Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
+        Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
+    });
 
 Route::get('/profile', [ProfileController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store']);
