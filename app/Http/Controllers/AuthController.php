@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Validation\ValidationException;
 
@@ -16,21 +15,11 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function index(){
-        $user = $this->authService->getUser();
-
+    public function index()
+    {
         return response()->json([
             'message' => 'Success Get User',
-            'user' => $user,
-        ]);
-    }
-    public function register(RegisterRequest $request)
-    {
-        $user = $this->authService->register($request->validated());
-
-        return response()->json([
-            'message' => 'Success Register',
-            'user' => $user,
+            'user' => $this->authService->getUser(),
         ]);
     }
 
@@ -40,7 +29,7 @@ class AuthController extends Controller
 
         if (!$token) {
             throw ValidationException::withMessages([
-                'email' => ['Invalid email or password']
+                'email' => ['Only admin can login']
             ]);
         }
 

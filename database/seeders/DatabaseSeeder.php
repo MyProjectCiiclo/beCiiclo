@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             AboutSeeder::class,
             ProjectExperiencesSeeder::class,
             ProfileSeeder::class,
-            WorkExperienceSeeder::class
+            WorkExperienceSeeder::class,
+            AdminSeeder::class,
         ]);
     }
 }
