@@ -15,6 +15,8 @@ class ProfileRepository
 
     public function getProfile()
     {
-        return $this->profileModel->with('skills')->first();
+        return $this->profileModel->with([
+            'skills',
+        ])->first();
     }
 }
