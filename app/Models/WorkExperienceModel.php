@@ -12,6 +12,6 @@ class WorkExperienceModel extends Model
         'title',
         'company',
         'description',
-        'year',
+        'years',
     ];
 }
