@@ -49,6 +49,12 @@ return [
         ],
     ],
 
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\AuthModel::class,
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -66,12 +72,6 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\AuthModel::class,
-        ],
-    ],
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords

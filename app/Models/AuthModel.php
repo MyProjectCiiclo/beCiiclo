@@ -7,7 +7,6 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class AuthModel extends Authenticatable implements JWTSubject
 {
-
     protected $table = 'users';
 
     protected $fillable = [
@@ -26,6 +25,7 @@ class AuthModel extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
+
     public function getJWTCustomClaims()
     {
         return [];

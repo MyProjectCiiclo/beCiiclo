@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repository\AuthRepository;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Models\User;
 
 class AuthService
 {
@@ -15,43 +16,34 @@ class AuthService
         $this->authRepository = $authRepository;
     }
 
-    public function register(array $data)
-    {
-        unset($data['password_confirmation']);
-
-        $data['password'] = Hash::make($data['password']);
-
-        if (!isset($data['role'])) {
-            $data['role'] = 'user';
-        }
-
-        $user = $this->authRepository->createUser($data);
-
-        $token = JWTAuth::fromUser($user);
-
-        return [
-            'token' => $token,
-            'user' => $user,
-        ];
-    }
-
     public function login(array $data)
     {
-        $user = $this->authRepository->findByEmail($data['email']);
+        if (
+            $data['email'] === env('ADMIN_EMAIL') &&
+            $data['password'] === env('ADMIN_PASSWORD')
+        ) {
+            $user = $this->authRepository->findByEmail(env('ADMIN_EMAIL'));
 
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return null;
+            if (!$user) {
+                $user = $this->authRepository->create([
+                    'name' => 'Admin',
+                    'email' => env('ADMIN_EMAIL'),
+                    'password' => Hash::make(env('ADMIN_PASSWORD')),
+                    'role' => 'admin'
+                ]);
+            }
+
+            return JWTAuth::fromUser($user);
         }
 
-        $token = JWTAuth::fromUser($user);
-
-        return $token;
-    } 
-
+        return false;
+    }
 
     public function getUser()
     {
-        $user =$this->authRepository->getUser();
-        return $user;
+        return [
+            'email' => env('ADMIN_EMAIL'),
+            'role' => 'admin',
+        ];
     }
 }
