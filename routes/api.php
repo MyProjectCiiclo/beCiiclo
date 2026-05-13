@@ -24,6 +24,7 @@ Route::middleware('auth:api')->group(function () {
 
 Route::group([], function () {
     Route::get('/profile', [ProfileController::class, 'index']);
+    Route::get('/contact/list', [ContactController::class, 'index']);
     Route::post('/contact', [ContactController::class, 'store']);
     Route::get('/work-experiences', [WorkExperienceController::class, 'index']);
     Route::get('/github/contributions', [GithubController::class, 'getContributions']);
