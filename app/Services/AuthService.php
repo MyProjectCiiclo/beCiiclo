@@ -41,9 +41,17 @@ class AuthService
 
     public function getUser()
     {
-        return [
-            'email' => env('ADMIN_EMAIL'),
-            'role' => 'admin',
-        ];
+        return $this->authRepository->findByEmail(env('ADMIN_EMAIL'));
+    }
+
+    public function updateUser(array $data)
+    {
+        $user = JWTAuth::user();
+
+        if (!$user) {
+            return null;
+        }
+
+        return $this->authRepository->update($user->id, $data);
     }
 }

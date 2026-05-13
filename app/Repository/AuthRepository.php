@@ -21,4 +21,14 @@ class AuthRepository
     {
         return AuthModel::create($data);
     }
+
+    public function update($id, array $data)
+    {
+        $user = AuthModel::findOrFail($id);
+
+        $user->fill($data);
+        $user->save();
+
+        return $user;
+    }
 }

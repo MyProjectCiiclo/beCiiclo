@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/update-user', [AuthController::class, 'updateUser']);
     Route::get('/me', [AuthController::class, 'index']);
 });
 
