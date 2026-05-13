@@ -13,7 +13,7 @@ class ProfileController extends Controller
     {
         $this->profileService = $profileService;
     }
-
+    
     public function index()
     {
         $profile = $this->profileService->getProfile();

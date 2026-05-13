@@ -13,8 +13,12 @@ return new class extends Migration
 
             $table->string('title');
             $table->string('company');
+
             $table->text('description');
             $table->string('date_range');
+
+            $table->integer('year')->nullable();
+            $table->integer('years')->nullable();
 
             $table->string('logo')->nullable();
 

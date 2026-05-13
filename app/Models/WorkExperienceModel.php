@@ -11,6 +11,7 @@ class WorkExperienceModel extends Model
     protected $fillable = [
         'title',
         'company',
-        'description'
+        'description',
+        'years',
     ];
 }

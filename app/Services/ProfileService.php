@@ -15,6 +15,11 @@ class ProfileService
 
     public function getProfile()
     {
-        return $this->profileRepository->getProfile();
+        $profile = $this->profileRepository->getProfile();
+
+        return [
+            ...$profile->toArray(),
+            'total_skills' => $profile->skills->count(),
+        ];
     }
 }

@@ -24,8 +24,13 @@ class ProfileModel extends Model
         'cv_url',
     ];
 
+    public function stats()
+    {
+        return $this->hasOne(ProfileStats::class);
+    }
+
     public function skills()
     {
-        return $this->hasMany(SkillModel::class, 'profile_id');
+        return $this->hasMany(SkillModel::class, 'profile_id', 'id');
     }
 }
