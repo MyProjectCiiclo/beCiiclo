@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ProfileSeeder::class,
             WorkExperienceSeeder::class,
             AdminSeeder::class,
+            ContactSeeder::class,
         ]);
     }
 }
