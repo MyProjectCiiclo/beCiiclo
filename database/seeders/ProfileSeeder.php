@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\ProfileModel;
+use App\Models\ProfileStats;
 use App\Models\SkillModel;
 use Illuminate\Database\Seeder;
 
@@ -14,20 +15,25 @@ class ProfileSeeder extends Seeder
             'full_name' => 'Jordan Mitchell',
             'title' => 'Full Stack Developer',
             'description' => 'I specialize in creating scalable, user-friendly web applications.',
-            'projects' => 156,
-            'years' => '2+',
-            'clients' => 42,
-            'experience_years' => '7+ Years',
-            'degree' => 'Master of Science',
-            'website' => 'portfolio.com',
+
             'email' => 'hokimthanh1234@gmail.com',
             'phone' => '+84 335 044 593',
+            'location' => 'Da Nang, Vietnam',
+
             'github' => 'github.com/KimThanh1801',
             'linkedin' => 'linkedin.com/in/ho-thi-kim-thanh/',
-            'location' => 'Da Nang, Vietnam',
-            'google_map_url' => 'https://maps.google.com/?q=Da+Nang+Vietnam',
+            'website' => 'portfolio.com',
+
             'avatar' => 'image-personal.png',
             'cv_url' => 'cv.pdf',
+        ]);
+
+        ProfileStats::create([
+            'profile_id' => $profile->id,
+            'projects' => 156,
+            'clients' => 42,
+            'years' => '2+',
+            'experience_years' => '7+ Years',
         ]);
 
         $skills = [

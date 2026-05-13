@@ -12,21 +12,16 @@ return new class extends Migration
             $table->id();
 
             $table->string('full_name');
-            $table->string('title')->nullable();
+            $table->string('title');
             $table->text('description')->nullable();
 
-            $table->integer('projects')->default(0);
-            $table->string('years')->nullable();
-            $table->integer('clients')->default(0);
-
-            $table->string('experience_years')->nullable();
-            $table->string('degree')->nullable();
-
-            $table->string('website')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('location')->nullable();
 
             $table->string('github')->nullable();
             $table->string('linkedin')->nullable();
+            $table->string('website')->nullable();
 
             $table->string('avatar')->nullable();
             $table->string('cv_url')->nullable();

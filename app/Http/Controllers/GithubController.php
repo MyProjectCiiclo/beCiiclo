@@ -16,14 +16,14 @@ class GithubController extends Controller
 
     public function getContributions()
     {
-        $result = $this->githubService->getContributions("KimThanh1801");
+        $result = $this->githubService->getContributions(env('GITHUB_USERNAME'));
 
         return response()->json($result);
     }
 
     public function getUser()
     {
-        $result = $this->githubService->getUser("KimThanh1801");
+        $result = $this->githubService->getUser(env('GITHUB_USERNAME'));
 
         return response()->json($result);
     }

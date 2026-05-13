@@ -15,6 +15,9 @@ class WorkExperienceRepository
 
     public function getAllWorkExperiences()
     {
-        return $this->workExperienceModel->all();
+        return $this->workExperienceModel
+        ->orderBy('year','desc')
+        ->orderBy('id','desc')
+        ->get();
     }
 }
