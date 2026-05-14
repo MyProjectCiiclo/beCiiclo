@@ -19,4 +19,18 @@ class ProfileRepository
             'skills',
         ])->first();
     }
+
+    public function updateProfile(array $data)
+    {
+        $profile = ProfileModel::first();
+
+        if (!$profile) {
+            $profile = ProfileModel::create($data);
+        } else {
+            $profile->fill($data);
+            $profile->save();
+        }
+
+        return $profile;
+    }
 }

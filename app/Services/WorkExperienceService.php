@@ -1,14 +1,26 @@
-<?php 
+<?php
+
 namespace App\Services;
 
 use App\Repository\WorkExperienceRepository;
 
-class WorkExperienceService{
+class WorkExperienceService
+{
     protected $workExperienceRepository;
-    public function __construct(WorkExperienceRepository $workExperienceRepository){
+    public function __construct(WorkExperienceRepository $workExperienceRepository)
+    {
         $this->workExperienceRepository = $workExperienceRepository;
     }
-    public function getAllWorkExperiences(){
-        return $this->workExperienceRepository->getAllWorkExperiences();
+    public function getAllWorkExperiences()
+    {
+        $data = $this->workExperienceRepository->getAllWorkExperiences();
+
+        return $data->groupBy('years')->map(function ($items, $year) {
+            return [
+                'year' => $year,
+                'total' => $items->count(),
+                'work_experiences' => $items
+            ];
+        })->values();
     }
 }

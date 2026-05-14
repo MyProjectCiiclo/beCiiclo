@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Models\WorkExperienceModel;
 
-class WorkExperienceRepository 
+class WorkExperienceRepository
 {
     protected $workExperienceModel;
 
@@ -16,8 +16,7 @@ class WorkExperienceRepository
     public function getAllWorkExperiences()
     {
         return $this->workExperienceModel
-        ->orderBy('year','desc')
-        ->orderBy('id','desc')
-        ->get();
+            ->orderBy('years', 'desc')
+            ->get();
     }
 }

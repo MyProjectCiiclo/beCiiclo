@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/update-user', [AuthController::class, 'updateUser']);
     Route::get('/me', [AuthController::class, 'index']);
 });
 
@@ -24,6 +25,7 @@ Route::middleware('auth:api')->group(function () {
 
 Route::group([], function () {
     Route::get('/profile', [ProfileController::class, 'index']);
+    Route::post('/profile/update', [ProfileController::class, 'updateProfile']);
     Route::get('/contact/list', [ContactController::class, 'index']);
     Route::post('/contact', [ContactController::class, 'store']);
     Route::get('/work-experiences', [WorkExperienceController::class, 'index']);

@@ -22,4 +22,9 @@ class ProfileService
             'total_skills' => $profile->skills->count(),
         ];
     }
+
+    public function updateProfile($data)
+    {
+        return $this->profileRepository->updateProfile($data);
+    }
 }
