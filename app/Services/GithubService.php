@@ -28,12 +28,8 @@ class GithubService
         return [
             'total' => $data['totalContributions'],
             'weeks' => $data['weeks']
-        ];return $data['data']['user']['contributionsCollection']['contributionCalendar'] ?? [
-            'totalContributions' => 0,
-            'weeks' => []
         ];
     }
-
     public function getUser($username)
     {
         return $this->githubRepository->getUser($username);
