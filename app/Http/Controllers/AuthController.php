@@ -29,11 +29,10 @@ class AuthController extends Controller
         $token = $this->authService->login($request->validated());
 
         if (!$token) {
-            throw ValidationException::withMessages([
-                'email' => ['Only admin can login']
-            ]);
+            return response()->json([
+                'message' => 'Email or password is incorrect'
+            ], 401);
         }
-
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
