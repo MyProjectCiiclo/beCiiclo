@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProjectExperiencesController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,10 +16,10 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
     Route::prefix('project')->group(function () {
-        Route::get('/show-project', [ProjectExperiencesController::class, 'index']);
-        Route::post('/create-project', [ProjectExperiencesController::class, 'createProject']);
-        Route::put('/update-project/{id}', [ProjectExperiencesController::class, 'updateProject']);
-        Route::delete('/destroy/{id}', [ProjectExperiencesController::class, 'destroy']);
+        Route::get('/show-project', [ProjectController::class, 'index']);
+        Route::post('/create-project', [ProjectController::class, 'createProject']);
+        Route::put('/update-project/{id}', [ProjectController::class, 'updateProject']);
+        Route::delete('/destroy/{id}', [ProjectController::class, 'destroy']);
     });
 });
 
