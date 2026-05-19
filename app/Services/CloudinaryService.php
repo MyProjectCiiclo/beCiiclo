@@ -10,13 +10,22 @@ class CloudinaryService
     public function upload($file)
     {
         $cloudName = env('CLOUDINARY_CLOUD_NAME');
+        $uploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
 
         if (!$cloudName) {
             throw new \Exception('Cloudinary cloud name is missing');
         }
 
+        if (!$uploadPreset) {
+            throw new \Exception('Cloudinary upload preset is missing');
+        }
+
         if (!$file || !$file->isValid()) {
             throw new \Exception('Invalid file upload');
+        }
+
+        if (!file_exists($file->getRealPath())) {
+            throw new \Exception('File not found on server');
         }
 
         try {
@@ -27,7 +36,7 @@ class CloudinaryService
                     $file->getClientOriginalName()
                 )
                 ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
-                    'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET')
+                    'upload_preset' => $uploadPreset
                 ]);
 
             Log::info('Cloudinary response', [
@@ -41,7 +50,11 @@ class CloudinaryService
 
             $result = $response->json();
 
-            return $result['secure_url'] ?? null;
+            if (!isset($result['secure_url'])) {
+                throw new \Exception('Cloudinary response missing secure_url');
+            }
+
+            return $result['secure_url'];
         } catch (\Exception $e) {
             Log::error('Cloudinary upload error', [
                 'message' => $e->getMessage()
