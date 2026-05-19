@@ -62,8 +62,8 @@ class ProjectController extends Controller
 
             $data['user_id'] = Auth::id();
 
-            if ($request->hasFile('image')) {
-                $data['image'] = $this->cloudinary->upload($request->file('image'));
+            if ($request->hasFile('image_url')) {
+                $data['image_url'] = $this->cloudinary->upload($request->file('image_url'));
             }
 
             $project = $this->projectService->createProject($data);
@@ -88,8 +88,8 @@ class ProjectController extends Controller
                 'project_type',
             ]);
 
-            if ($request->hasFile('image')) {
-                $data['image'] = $this->cloudinary->upload($request->file('image'));
+            if ($request->hasFile('image_url')) {
+                $data['image_url'] = $this->cloudinary->upload($request->file('image_url'));
             }
 
             $project = $this->projectService->updateProject($id, $data);
