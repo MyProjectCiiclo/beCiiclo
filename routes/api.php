@@ -18,13 +18,15 @@ Route::prefix('project')->group(function () {
 
     Route::get('/show-project', [ProjectController::class, 'index']);
 
-    Route::post('/create-project', [ProjectController::class, 'createProject']);
+    Route::middleware('auth:api')->group(function () {
 
-    Route::put('/update-project/{id}', [ProjectController::class, 'updateProject']);
+        Route::post('/create-project', [ProjectController::class, 'createProject']);
 
-    Route::delete('/destroy/{id}', [ProjectController::class, 'destroy']);
+        Route::put('/update-project/{id}', [ProjectController::class, 'updateProject']);
+
+        Route::delete('/destroy/{id}', [ProjectController::class, 'destroy']);
+    });
 });
-
 Route::group([], function () {
     Route::get('/profile', [ProfileController::class, 'index']);
     Route::post('/profile/update', [ProfileController::class, 'updateProfile']);
