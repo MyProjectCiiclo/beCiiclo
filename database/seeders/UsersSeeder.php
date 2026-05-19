@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\AuthModel;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,7 +13,7 @@ class UsersSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        AuthModel::create([
             'name' => 'Kim Thanh',
             'email' => 'hokimthanh1234@gmail.com',
             'password' => Hash::make('coganglennao12'),
