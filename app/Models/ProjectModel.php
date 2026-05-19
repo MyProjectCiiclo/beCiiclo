@@ -13,7 +13,7 @@ class ProjectModel extends Model
         'project_name',
         'language',
         'description',
-        'image',
+        'image_url',
         'project_type',
         'user_id',
     ];
