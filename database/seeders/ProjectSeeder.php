@@ -7,38 +7,43 @@ use Illuminate\Support\Facades\DB;
 
 class ProjectSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DB::table('projects')->insert([
+
             [
-                'title' => 'Portfolio Website',
+                'project_name' => 'Portfolio Website',
+                'language' => 'Next.js, TypeScript',
                 'description' => 'Personal portfolio website using Next.js and Tailwind CSS',
-                'image_url' => 'https://example.com/portfolio.png',
-                'tags' => json_encode(['Next.js', 'Tailwind', 'TypeScript']),
+                'image' => 'https://example.com/portfolio.png',
+                'project_type' => 'Frontend',
+                'user_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
 
             [
-                'title' => 'E-Commerce Website',
+                'project_name' => 'E-Commerce Website',
+                'language' => 'Laravel, MySQL',
                 'description' => 'Online shopping website with cart and payment',
-                'image_url' => 'https://example.com/ecommerce.png',
-                'tags' => json_encode(['Laravel', 'MySQL', 'Bootstrap']),
+                'image' => 'https://example.com/ecommerce.png',
+                'project_type' => 'Fullstack',
+                'user_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
 
             [
-                'title' => 'Task Management App',
+                'project_name' => 'Task Management App',
+                'language' => 'React, Node.js',
                 'description' => 'Application for managing daily tasks',
-                'image_url' => 'https://example.com/task.png',
-                'tags' => json_encode(['React', 'Node.js', 'MongoDB']),
+                'image' => 'https://example.com/task.png',
+                'project_type' => 'Backend',
+                'user_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+
         ]);
     }
 }

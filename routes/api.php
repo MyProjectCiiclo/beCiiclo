@@ -14,13 +14,15 @@ Route::prefix('auth')->group(function () {
     Route::get('/me', [AuthController::class, 'index']);
 });
 
-Route::middleware('auth:api')->group(function () {
-    Route::prefix('project')->group(function () {
-        Route::get('/show-project', [ProjectController::class, 'index']);
-        Route::post('/create-project', [ProjectController::class, 'createProject']);
-        Route::put('/update-project/{id}', [ProjectController::class, 'updateProject']);
-        Route::delete('/destroy/{id}', [ProjectController::class, 'destroy']);
-    });
+Route::prefix('project')->group(function () {
+
+    Route::get('/show-project', [ProjectController::class, 'index']);
+
+    Route::post('/create-project', [ProjectController::class, 'createProject']);
+
+    Route::put('/update-project/{id}', [ProjectController::class, 'updateProject']);
+
+    Route::delete('/destroy/{id}', [ProjectController::class, 'destroy']);
 });
 
 Route::group([], function () {
