@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\AuthModel;
 
 return [
 
@@ -44,7 +44,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'jwt',
+            'driver' => 'sanctum',
             'provider' => 'users',
         ],
     ],
