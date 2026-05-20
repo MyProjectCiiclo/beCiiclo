@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Services\CloudinaryService;
 use App\Services\ProjectService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Illuminate\Support\Facades\Auth;
@@ -23,10 +24,12 @@ class ProjectController extends Controller
         $this->cloudinary = $cloudinary;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $perPage = request()->get('per_page', 10);
+            $perPage = $request->query('limit', 9);
+
+            $perPage = min((int) $perPage, 50);
 
             $data = $this->projectService->getAll($perPage);
 
@@ -41,8 +44,11 @@ class ProjectController extends Controller
                 ]
             ]);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return response()->json(['message' => 'error'], 500);
+            Log::error('Project index error: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'error',
+            ], 500);
         }
     }
 
