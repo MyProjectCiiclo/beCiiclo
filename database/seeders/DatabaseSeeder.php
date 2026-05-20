@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             ProjectSeeder::class,
             UserSeeder::class,
+            CvSeeder::class,
         ]);
     }
 }
