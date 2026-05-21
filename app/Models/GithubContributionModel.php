@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GithubContribution extends Model
+class GithubContributionModel extends Model
 {
     public $total;
     public $weeks;

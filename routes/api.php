@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CvController;
+use App\Http\Controllers\EducationController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -18,7 +20,6 @@ Route::prefix('auth')->group(function () {
         Route::get('/me', [AuthController::class, 'index']);
 
         Route::post('/update-user', [AuthController::class, 'updateUser']);
-
     });
 });
 
@@ -48,5 +49,28 @@ Route::prefix('cv')->group(function () {
         Route::post('/create-cv', [CvController::class, 'uploadCv']);
         Route::put('/update-cv/{id}', [CvController::class, 'updateCv']);
         Route::delete('/destroy/{id}', [CvController::class, 'destroy']);
+    });
+});
+
+
+Route::prefix('educations')->group(function () {
+    Route::get('/show-educations', [EducationController::class, 'index']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+
+
+        Route::post('/create-educations', [EducationController::class, 'store']);
+
+        Route::put('/update-educations/{id}', [EducationController::class, 'update']);
+
+        Route::delete('/destroy/{id}', [EducationController::class, 'destroy']);
+    });
+});
+
+Route::prefix('courses')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/create-courses', [CourseController::class, 'store']);
+        Route::put('/update-courses/{id}', [CourseController::class, 'update']);
+        Route::delete('/destroy/{id}', [CourseController::class, 'destroy']);
     });
 });
