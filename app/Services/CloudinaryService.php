@@ -12,12 +12,8 @@ class CloudinaryService
         $cloudName = env('CLOUDINARY_CLOUD_NAME');
         $uploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
 
-        if (!$cloudName) {
-            throw new \Exception('Cloudinary cloud name is missing');
-        }
-
-        if (!$uploadPreset) {
-            throw new \Exception('Cloudinary upload preset is missing');
+        if (!$cloudName || !$uploadPreset) {
+            throw new \Exception('Cloudinary config missing');
         }
 
         if (!$file || !$file->isValid()) {
@@ -25,11 +21,16 @@ class CloudinaryService
         }
 
         if (!file_exists($file->getRealPath())) {
-            throw new \Exception('File not found on server');
+            throw new \Exception('File not found');
         }
 
-        $extension = $file->getClientOriginalExtension();
-        $isPdf = strtolower($extension) === 'pdf';
+        $extension = strtolower($file->getClientOriginalExtension());
+
+        $isPdf = $extension === 'pdf';
+
+        $url = $isPdf
+            ? "https://api.cloudinary.com/v1_1/{$cloudName}/raw/upload"
+            : "https://api.cloudinary.com/v1_1/{$cloudName}/image/upload";
 
         try {
             $response = Http::timeout(30)
@@ -38,9 +39,8 @@ class CloudinaryService
                     fopen($file->getRealPath(), 'r'),
                     $file->getClientOriginalName()
                 )
-                ->post("https://api.cloudinary.com/v1_1/{$cloudName}/upload", [
+                ->post($url, [
                     'upload_preset' => $uploadPreset,
-                    'resource_type' => $isPdf ? 'raw' : 'image'
                 ]);
 
             Log::info('Cloudinary response', [
@@ -49,13 +49,13 @@ class CloudinaryService
             ]);
 
             if (!$response->successful()) {
-                throw new \Exception('Upload failed: ' . $response->body());
+                throw new \Exception($response->body());
             }
 
             $result = $response->json();
 
             if (!isset($result['secure_url'])) {
-                throw new \Exception('Cloudinary response missing secure_url');
+                throw new \Exception('Missing secure_url');
             }
 
             return $result['secure_url'];
