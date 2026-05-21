@@ -28,6 +28,9 @@ class CloudinaryService
             throw new \Exception('File not found on server');
         }
 
+        $extension = $file->getClientOriginalExtension();
+        $isPdf = strtolower($extension) === 'pdf';
+
         try {
             $response = Http::timeout(30)
                 ->attach(
@@ -35,8 +38,9 @@ class CloudinaryService
                     fopen($file->getRealPath(), 'r'),
                     $file->getClientOriginalName()
                 )
-                ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
-                    'upload_preset' => $uploadPreset
+                ->post("https://api.cloudinary.com/v1_1/{$cloudName}/upload", [
+                    'upload_preset' => $uploadPreset,
+                    'resource_type' => $isPdf ? 'raw' : 'image'
                 ]);
 
             Log::info('Cloudinary response', [
