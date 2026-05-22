@@ -31,41 +31,49 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $data = $request->only([
-            'full_name',
-            'title',
-            'description',
-            'email',
-            'phone',
-            'location',
-            'github',
-            'linkedin',
-            'website',
-            'cv_url'
-        ]);
+        try {
+            $data = $request->only([
+                'full_name',
+                'title',
+                'description',
+                'email',
+                'phone',
+                'location',
+                'github',
+                'linkedin',
+                'website',
+                'cv_url'
+            ]);
 
-        if ($request->hasFile('avatar')) {
+            if ($request->hasFile('avatar')) {
+                $file = $request->file('avatar');
 
-            $avatarUrl = $this
-                ->cloudinaryService
-                ->upload($request->file('avatar'));
+                $avatarUrl = $this->cloudinaryService->upload($file);
 
-            $data['avatar'] = $avatarUrl;
-        }
+                $data['avatar'] = $avatarUrl;
+            }
 
-        $data = array_filter($data);
+            $data = array_filter($data, function ($value) {
+                return $value !== null;
+            });
 
-        if (empty($data)) {
+            if (count($data) === 0) {
+                return response()->json([
+                    'message' => 'Please enter data to update'
+                ], 422);
+            }
+
+            $profile = $this->profileService->updateProfile($data);
+
             return response()->json([
-                'message' => 'Please enter data to update'
-            ], 422);
+                'message' => 'success',
+                'data' => $profile
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'error',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $profile = $this->profileService->updateProfile($data);
-
-        return response()->json([
-            'message' => 'success',
-            'data' => $profile
-        ]);
     }
 }
