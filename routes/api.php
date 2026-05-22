@@ -8,6 +8,7 @@ use App\Http\Controllers\EducationController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,4 +77,11 @@ Route::prefix('courses')->group(function () {
         Route::put('/update-courses/{id}', [CourseController::class, 'update']);
         Route::delete('/destroy/{id}', [CourseController::class, 'destroy']);
     });
+});
+
+
+
+Route::get('/ratings', [RatingController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::delete('/ratings/{id}', [RatingController::class, 'destroy']);
 });
