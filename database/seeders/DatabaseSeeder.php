@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             CvSeeder::class,
             EducationSeeder::class,
             CourseSeeder::class,
+            RatingSeeder::class,
         ]);
     }
 }

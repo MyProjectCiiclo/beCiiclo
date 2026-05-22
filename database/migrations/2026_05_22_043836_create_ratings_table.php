@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('message');
-            $table->integer('rating'); // 1-5 stars
+            $table->integer('rating'); 
             $table->timestamps();
         });
     }
