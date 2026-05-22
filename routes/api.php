@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
 
     Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/me', [AuthController::class, 'index']);
 
     Route::middleware('auth:sanctum')->group(function () {
 
-        Route::get('/me', [AuthController::class, 'index']);
 
         Route::post('/update-user', [AuthController::class, 'updateUser']);
     });
