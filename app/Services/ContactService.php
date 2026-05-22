@@ -23,4 +23,8 @@ class ContactService
     {
         return $this->contactRepository->sendMessage($data);
     }
+    public function deleteContact($id)
+    {
+        return $this->contactRepository->delete($id);
+    }
 }
