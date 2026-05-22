@@ -47,22 +47,12 @@ class ProfileController extends Controller
 
             if ($request->hasFile('avatar')) {
                 $file = $request->file('avatar');
-
-                $avatarUrl = $this->cloudinaryService->upload($file);
-
-                $data['avatar'] = $avatarUrl;
+                $data['avatar'] = $this->cloudinaryService->upload($file);
             }
 
             $data = array_filter($data, function ($value) {
-                return $value !== null;
+                return $value !== null && $value !== '';
             });
-
-            if (count($data) === 0) {
-                return response()->json([
-                    'message' => 'Please enter data to update'
-                ], 422);
-            }
-
             $profile = $this->profileService->updateProfile($data);
 
             return response()->json([
