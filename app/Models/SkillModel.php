@@ -11,6 +11,7 @@ class SkillModel extends Model
         'profile_id',
         'name',
         'percent',
+        'color'
     ];
 
     public function profile()
