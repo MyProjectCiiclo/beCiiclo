@@ -33,11 +33,12 @@ Route::prefix('project')->group(function () {
 
 Route::group([], function () {
     Route::get('/profile', [ProfileController::class, 'index']);
-    Route::post('/profile/update', [ProfileController::class, 'updateProfile']);
+
     Route::get('/contact/list', [ContactController::class, 'index']);
     Route::post('/contact', [ContactController::class, 'store']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/contact/destroy/{id}', [ContactController::class, 'destroy']);
+        Route::put('/profile/update', [ProfileController::class, 'updateProfile']);
     });
     Route::get('/work-experiences', [WorkExperienceController::class, 'index']);
     Route::get('/github/contributions', [GithubController::class, 'getContributions']);
