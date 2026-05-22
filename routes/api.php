@@ -18,8 +18,6 @@ Route::prefix('auth')->group(function () {
     Route::get('/me', [AuthController::class, 'index']);
 
     Route::middleware('auth:sanctum')->group(function () {
-
-
         Route::post('/update-user', [AuthController::class, 'updateUser']);
     });
 });
