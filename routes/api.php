@@ -37,6 +37,9 @@ Route::group([], function () {
     Route::post('/profile/update', [ProfileController::class, 'updateProfile']);
     Route::get('/contact/list', [ContactController::class, 'index']);
     Route::post('/contact', [ContactController::class, 'store']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::delete('/contact/destroy/{id}', [ContactController::class, 'destroy']);
+    });
     Route::get('/work-experiences', [WorkExperienceController::class, 'index']);
     Route::get('/github/contributions', [GithubController::class, 'getContributions']);
     Route::get('/github/user', [GithubController::class, 'getUser']);
