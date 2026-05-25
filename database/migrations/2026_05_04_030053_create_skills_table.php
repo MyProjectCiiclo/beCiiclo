@@ -14,9 +14,9 @@ return new class extends Migration
             $table->foreignId('profile_id')
                 ->constrained('profiles')
                 ->onDelete('cascade');
-            $table->string('color')->nullable();
+
             $table->string('name');
-            $table->integer('percent');
+            $table->string('image')->nullable();
 
             $table->timestamps();
         });
