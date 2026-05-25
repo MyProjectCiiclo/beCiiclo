@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class SkillModel extends Model
 {
     protected $table = 'skills';
+
     protected $fillable = [
         'profile_id',
         'name',
-        'percent',
-        'color'
+        'image',
     ];
 
     public function profile()

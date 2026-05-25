@@ -39,28 +39,23 @@ class ProfileSeeder extends Seeder
         $skills = [
             [
                 'name' => 'React & Next.js',
-                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-                'percent' => 95,
+                'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
             ],
             [
                 'name' => 'Node.js & Express',
-                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-                'percent' => 90,
+                'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
             ],
             [
                 'name' => 'UI/UX Design',
-                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
-                'percent' => 85,
+                'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
             ],
             [
                 'name' => 'MongoDB & PostgreSQL',
-                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
-                'percent' => 80,
+                'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
             ],
             [
                 'name' => 'Docker & AWS',
-                'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
-                'percent' => 75,
+                'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
             ],
         ];
 
@@ -68,33 +63,8 @@ class ProfileSeeder extends Seeder
             SkillModel::create([
                 'profile_id' => $profile->id,
                 'name' => $skill['name'],
-                'icon' => $skill['icon'],
-                'percent' => $skill['percent'],
-                'color' => $this->generateColor($skill['name']), // 👈 AUTO COLOR
+                'image' => $skill['image'],
             ]);
         }
-    }
-
-    /**
-     * Generate stable color based on skill name
-     */
-    private function generateColor($name)
-    {
-        $colors = [
-            '#f472b6', 
-            '#ec4899',
-            '#fb7185',
-            '#f9a8d4',
-            '#a78bfa',
-            '#60a5fa',
-            '#34d399',
-            '#fbbf24',
-            '#f87171',
-            '#38bdf8',
-        ];
-
-        $hash = crc32($name);
-
-        return $colors[$hash % count($colors)];
     }
 }
