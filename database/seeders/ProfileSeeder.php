@@ -70,7 +70,27 @@ class ProfileSeeder extends Seeder
                 'name' => $skill['name'],
                 'image' => $skill['image'],
                 'weight' => $skill['weight'],
+                'color' => $this->generateColor($skill['name']),
             ]);
         }
+    }
+    private function generateColor($name)
+    {
+        $colors = [
+            '#f472b6',
+            '#ec4899',
+            '#fb7185',
+            '#f9a8d4',
+            '#a78bfa',
+            '#60a5fa',
+            '#34d399',
+            '#fbbf24',
+            '#f87171',
+            '#38bdf8',
+        ];
+
+        $hash = crc32($name);
+
+        return $colors[$hash % count($colors)];
     }
 }

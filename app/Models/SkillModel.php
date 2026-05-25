@@ -13,6 +13,7 @@ class SkillModel extends Model
         'name',
         'image',
         'weight',
+        'color',
     ];
 
     public function profile()
