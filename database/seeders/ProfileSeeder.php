@@ -40,22 +40,27 @@ class ProfileSeeder extends Seeder
             [
                 'name' => 'React & Next.js',
                 'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+                'weight' => 5,
             ],
             [
                 'name' => 'Node.js & Express',
                 'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+                'weight' => 4,
             ],
             [
                 'name' => 'UI/UX Design',
                 'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
+                'weight' => 3,
             ],
             [
                 'name' => 'MongoDB & PostgreSQL',
                 'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
+                'weight' => 4,
             ],
             [
                 'name' => 'Docker & AWS',
                 'image' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
+                'weight' => 3,
             ],
         ];
 
@@ -64,6 +69,7 @@ class ProfileSeeder extends Seeder
                 'profile_id' => $profile->id,
                 'name' => $skill['name'],
                 'image' => $skill['image'],
+                'weight' => $skill['weight'],
             ]);
         }
     }
