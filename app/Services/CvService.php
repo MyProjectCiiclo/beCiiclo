@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repository\CvRepository;
 use App\Services\CloudinaryService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class CvService
 {
@@ -30,8 +31,6 @@ class CvService
             throw new \Exception('CV file is required');
         }
 
-        $url = $this->cloudinaryService->upload($file);
-
         $userId = Auth::id();
 
         if (!$userId) {
@@ -39,6 +38,16 @@ class CvService
                 'message' => 'Unauthenticated user'
             ], 401);
         }
+
+        $existingCv = $this->cvRepository->findByUserId($userId);
+
+        if ($existingCv) {
+            throw ValidationException::withMessages([
+                'cv' => 'You already have a CV. Please update instead.'
+            ]);
+        }
+
+        $url = $this->cloudinaryService->upload($file);
 
         return $this->cvRepository->create([
             'cv' => $url,
@@ -48,6 +57,10 @@ class CvService
 
     public function updateCv($id, $file)
     {
+        if (!$file) {
+            throw new \Exception('CV file is required');
+        }
+
         $url = $this->cloudinaryService->upload($file);
 
         return $this->cvRepository->updateCv($id, [
