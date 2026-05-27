@@ -22,6 +22,8 @@ class ProfileModel extends Model
         'linkedin',
         'avatar',
         'cv_url',
+        'phone',
+        'location',
     ];
 
     public function stats()

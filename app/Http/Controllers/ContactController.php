@@ -35,4 +35,15 @@ class ContactController extends Controller
             'data' => $contact
         ]);
     }
+
+    public function destroy($id)
+{
+    $deleted = $this->contactService->deleteContact($id);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Contact deleted successfully',
+        'data' => $deleted
+    ]);
+}
 }

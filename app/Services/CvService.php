@@ -26,12 +26,18 @@ class CvService
 
     public function uploadCv($file)
     {
+        if (!$file) {
+            throw new \Exception('CV file is required');
+        }
+
         $url = $this->cloudinaryService->upload($file);
 
         $userId = Auth::id();
 
         if (!$userId) {
-            throw new \Exception('Unauthenticated user');
+            return response()->json([
+                'message' => 'Unauthenticated user'
+            ], 401);
         }
 
         return $this->cvRepository->create([

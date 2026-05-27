@@ -15,8 +15,6 @@ class CvModel extends Model
 
     public function user()
     {
-        return $this->belongsTo(AuthModel::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
-
-    
 }

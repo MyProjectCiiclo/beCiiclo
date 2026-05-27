@@ -27,4 +27,17 @@ class ContactRepository
     {
         return $this->contactModel->create($data);
     }
+
+    public function delete($id)
+    {
+        $contact = ContactModel::find($id);
+
+        if (!$contact) {
+            return null;
+        }
+
+        $contact->delete();
+
+        return $contact;
+    }
 }

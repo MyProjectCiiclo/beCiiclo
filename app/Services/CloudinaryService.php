@@ -26,10 +26,6 @@ class CloudinaryService
             'upload_preset' => $uploadPreset,
         ]);
 
-        if (!$response->successful()) {
-            dd($response->body()); // 👈 chỗ này để thấy lỗi thật
-        }
-
         return $response->json()['secure_url'];
     }
 }
