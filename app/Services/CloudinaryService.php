@@ -12,7 +12,7 @@ class CloudinaryService
         $uploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
 
         $url = "https://api.cloudinary.com/v1_1/{$cloudName}/auto/upload";
-
+        dd('NEW CODE HERE');
         $response = Http::attach(
             'file',
             fopen($file->getRealPath(), 'r'),
