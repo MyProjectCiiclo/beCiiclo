@@ -11,9 +11,7 @@ class CloudinaryService
         $cloudName = env('CLOUDINARY_CLOUD_NAME');
         $uploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
 
-        $resourceType = 'auto';
-
-        $url = "https://api.cloudinary.com/v1_1/{$cloudName}/{$resourceType}/upload";
+        $url = "https://api.cloudinary.com/v1_1/{$cloudName}/auto/upload";
 
         $response = Http::attach(
             'file',
@@ -23,6 +21,12 @@ class CloudinaryService
             'upload_preset' => $uploadPreset,
         ]);
 
-        return $response->json()['secure_url'];
+        $data = $response->json();
+
+        if (!$response->successful() || !isset($data['secure_url'])) {
+            throw new \Exception('Upload failed: ' . json_encode($data));
+        }
+
+        return $data['secure_url'];
     }
 }
