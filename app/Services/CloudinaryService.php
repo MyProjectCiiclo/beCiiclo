@@ -3,30 +3,55 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CloudinaryService
 {
     public function upload($file)
     {
-        $cloudName = env('CLOUDINARY_CLOUD_NAME');
-        $uploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
+        $cloudName = config('cloudinary.cloud_name');
+        $uploadPreset = config('cloudinary.upload_preset');
 
-        $url = "https://api.cloudinary.com/v1_1/{$cloudName}/auto/upload";
-        dd('NEW CODE HERE');
-        $response = Http::attach(
-            'file',
-            fopen($file->getRealPath(), 'r'),
-            $file->getClientOriginalName()
-        )->post($url, [
-            'upload_preset' => $uploadPreset,
+        if (empty($cloudName) || empty($uploadPreset)) {
+            Log::error('Cloudinary ENV missing', [
+                'cloud_name' => $cloudName,
+                'upload_preset' => $uploadPreset
+            ]);
+
+            throw new \Exception('Cloudinary config missing');
+        }
+        $url = "https://api.cloudinary.com/v1_1/{$cloudName}/raw/upload";
+
+        Log::info('Cloudinary Upload Start', [
+            'url' => $url,
+            'file_name' => $file->getClientOriginalName()
         ]);
 
-        $data = $response->json();
+        try {
+            $response = Http::attach(
+                'file',
+                file_get_contents($file->getRealPath()),
+                $file->getClientOriginalName()
+            )->post($url, [
+                'upload_preset' => $uploadPreset,
+            ]);
 
-        if (!$response->successful() || !isset($data['secure_url'])) {
-            throw new \Exception('Upload failed: ' . json_encode($data));
+            $data = $response->json();
+
+            Log::info('Cloudinary Response', $data);
+
+            if (!$response->successful() || !isset($data['secure_url'])) {
+                Log::error('Cloudinary Upload Failed', $data);
+                throw new \Exception('Upload failed: ' . json_encode($data));
+            }
+
+            return $data['secure_url'];
+        } catch (\Exception $e) {
+            Log::error('Cloudinary Exception', [
+                'message' => $e->getMessage()
+            ]);
+
+            throw $e;
         }
-
-        return $data['secure_url'];
     }
 }
