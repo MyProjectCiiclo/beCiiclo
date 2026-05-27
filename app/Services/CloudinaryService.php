@@ -12,59 +12,20 @@ class CloudinaryService
         $cloudName = env('CLOUDINARY_CLOUD_NAME');
         $uploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
 
-        if (!$cloudName || !$uploadPreset) {
-            throw new \Exception('Cloudinary config missing');
-        }
+        $extension = strtolower(pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION));
 
-        if (!$file || !$file->isValid()) {
-            throw new \Exception('Invalid file upload');
-        }
+        $resourceType = $extension === 'pdf' ? 'raw' : 'image';
 
-        if (!file_exists($file->getRealPath())) {
-            throw new \Exception('File not found');
-        }
+        $url = "https://api.cloudinary.com/v1_1/{$cloudName}/{$resourceType}/upload";
 
-        $extension = strtolower($file->getClientOriginalExtension());
+        $response = Http::attach(
+            'file',
+            fopen($file->getRealPath(), 'r'),
+            $file->getClientOriginalName()
+        )->post($url, [
+            'upload_preset' => $uploadPreset,
+        ]);
 
-        $isPdf = $extension === 'pdf';
-
-        $url = $isPdf
-            ? "https://api.cloudinary.com/v1_1/{$cloudName}/raw/upload"
-            : "https://api.cloudinary.com/v1_1/{$cloudName}/image/upload";
-
-        try {
-            $response = Http::timeout(30)
-                ->attach(
-                    'file',
-                    fopen($file->getRealPath(), 'r'),
-                    $file->getClientOriginalName()
-                )
-                ->post($url, [
-                    'upload_preset' => $uploadPreset,
-                ]);
-
-            Log::info('Cloudinary response', [
-                'status' => $response->status(),
-                'body' => $response->body()
-            ]);
-
-            if (!$response->successful()) {
-                throw new \Exception($response->body());
-            }
-
-            $result = $response->json();
-
-            if (!isset($result['secure_url'])) {
-                throw new \Exception('Missing secure_url');
-            }
-
-            return $result['secure_url'];
-        } catch (\Exception $e) {
-            Log::error('Cloudinary upload error', [
-                'message' => $e->getMessage()
-            ]);
-
-            throw $e;
-        }
+        return $response->json()['secure_url'];
     }
 }
