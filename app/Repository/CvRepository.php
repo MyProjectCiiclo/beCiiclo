@@ -22,7 +22,10 @@ class CvRepository
     {
         return $this->cvModel->create($data);
     }
-
+    public function findByUserId($userId)
+    {
+        return $this->cvModel->where('user_id', $userId)->first();
+    }
     public function updateCv($id, array $data)
     {
         $cv = $this->cvModel->findOrFail($id);
