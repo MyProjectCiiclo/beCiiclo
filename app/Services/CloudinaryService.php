@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class CloudinaryService
 {
@@ -12,9 +11,7 @@ class CloudinaryService
         $cloudName = env('CLOUDINARY_CLOUD_NAME');
         $uploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
 
-        $extension = strtolower(pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION));
-
-        $resourceType = $extension === 'pdf' ? 'raw' : 'image';
+        $resourceType = 'auto';
 
         $url = "https://api.cloudinary.com/v1_1/{$cloudName}/{$resourceType}/upload";
 
