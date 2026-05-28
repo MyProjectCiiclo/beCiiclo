@@ -17,12 +17,12 @@ class SkillRepository
     }
     public function find($id)
     {
-        return SkillModel::find($id);
+        return SkillModel::findOrFail($id);
     }
     public function findByName($name)
-{
-    return SkillModel::where('name', $name)->first();
-}
+    {
+        return SkillModel::whereRaw('LOWER(name) = ?', [strtolower($name)])->first();
+    }
     public function update($id, array $data)
     {
         $skill = SkillModel::find($id);
