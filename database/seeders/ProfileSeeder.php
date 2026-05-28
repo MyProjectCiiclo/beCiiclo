@@ -4,14 +4,18 @@ namespace Database\Seeders;
 
 use App\Models\ProfileModel;
 use App\Models\ProfileStats;
-use App\Models\SkillModel;
+use App\Models\AuthModel;
 use Illuminate\Database\Seeder;
 
 class ProfileSeeder extends Seeder
 {
     public function run(): void
     {
+        $user = AuthModel::first();
+
         $profile = ProfileModel::create([
+            'user_id' => $user->id,
+
             'full_name' => 'Jordan Mitchell',
             'title' => 'Full Stack Developer',
             'description' => 'I specialize in creating scalable, user-friendly web applications.',

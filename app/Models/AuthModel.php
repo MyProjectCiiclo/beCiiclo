@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\ProfileModel;
 
 class AuthModel extends Authenticatable
 {
@@ -22,8 +23,9 @@ class AuthModel extends Authenticatable
         'password',
         'remember_token',
     ];
+
     public function profile()
-{
-    return $this->hasOne(ProfileModel::class, 'user_id');
-}
+    {
+        return $this->hasOne(ProfileModel::class, 'user_id');
+    }
 }
