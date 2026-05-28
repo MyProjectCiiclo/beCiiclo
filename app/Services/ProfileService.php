@@ -25,6 +25,14 @@ class ProfileService
 
     public function updateProfile($data)
     {
-        return $this->profileRepository->updateProfile($data);
+        $profile = $this->profileRepository->updateProfile($data);
+
+        if ($profile && $profile->user) {
+            $profile->user->update([
+                'name' => $data['full_name'] ?? $profile->user->name,
+            ]);
+        }
+
+        return $profile->load('user');
     }
 }

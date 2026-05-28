@@ -35,4 +35,9 @@ class ProfileModel extends Model
     {
         return $this->hasMany(SkillModel::class, 'profile_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(AuthModel::class, 'user_id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\ProfileModel;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileRepository
 {
@@ -15,21 +16,24 @@ class ProfileRepository
 
     public function getProfile()
     {
-        return $this->profileModel->with([
-            'skills',
-        ])->first();
+        $user = Auth::user();
+
+        return $this->profileModel
+            ->with(['skills'])
+            ->where('user_id', $user->id)
+            ->first();
     }
 
     public function updateProfile(array $data)
     {
-        $profile = ProfileModel::first();
+        $user = Auth::user();
 
-        if (!$profile) {
-            $profile = ProfileModel::create($data);
-        } else {
-            $profile->fill($data);
-            $profile->save();
-        }
+        $profile = ProfileModel::firstOrCreate([
+            'user_id' => $user->id,
+        ]);
+
+        $profile->fill($data);
+        $profile->save();
 
         return $profile;
     }
