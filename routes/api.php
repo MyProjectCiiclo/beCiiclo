@@ -9,6 +9,7 @@ use App\Http\Controllers\GithubController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\SkillController;
 use App\Http\Controllers\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
 
@@ -83,4 +84,15 @@ Route::prefix('courses')->group(function () {
 Route::get('/ratings', [RatingController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/ratings/{id}', [RatingController::class, 'destroy']);
+});
+
+
+
+Route::prefix('skills')->group(function () {
+    Route::get('', [SkillController::class, 'index']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/create-skills', [SkillController::class, 'store']);
+        Route::put('/update-skills/{id}', [SkillController::class, 'update']);
+        Route::delete('/destroy/{id}', [SkillController::class, 'destroy']);
+    });
 });
