@@ -29,8 +29,7 @@ Route::prefix('project')->group(function () {
         Route::post('/create-project', [ProjectController::class, 'createProject']);
         Route::put('/update-project/{id}', [ProjectController::class, 'updateProject']);
         Route::delete('/destroy/{id}', [ProjectController::class, 'destroy']);
-    });
-});
+    });});
 
 Route::group([], function () {
     Route::get('/profile', [ProfileController::class, 'index']);
