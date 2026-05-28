@@ -15,7 +15,14 @@ class SkillRepository
     {
         return SkillModel::create($data);
     }
-
+    public function find($id)
+    {
+        return SkillModel::find($id);
+    }
+    public function findByName($name)
+{
+    return SkillModel::where('name', $name)->first();
+}
     public function update($id, array $data)
     {
         $skill = SkillModel::find($id);
