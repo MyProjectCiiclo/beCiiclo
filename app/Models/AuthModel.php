@@ -22,4 +22,8 @@ class AuthModel extends Authenticatable
         'password',
         'remember_token',
     ];
+    public function profile()
+{
+    return $this->hasOne(ProfileModel::class, 'user_id');
+}
 }
