@@ -6,35 +6,32 @@ use App\Repository\SkillRepository;
 
 class SkillService
 {
-    protected $repo;
+    protected $skillRepository;
+    protected $cloudinaryService;
 
-    public function __construct(SkillRepository $repo)
-    {
-        $this->repo = $repo;
-    }
-
-    public function getAll()
-    {
-        return $this->repo->getAll();
-    }
-
-    public function getById($id)
-    {
-        return $this->repo->findById($id);
+    public function __construct(
+        SkillRepository $skillRepository,
+        CloudinaryService $cloudinaryService
+    ) {
+        $this->skillRepository = $skillRepository;
+        $this->cloudinaryService = $cloudinaryService;
     }
 
     public function create(array $data)
     {
-        return $this->repo->create($data);
+        if (isset($data['image']) && $data['image'] instanceof \Illuminate\Http\UploadedFile) {
+            $data['image'] = $this->cloudinaryService->upload($data['image']);
+        }
+
+        return $this->skillRepository->create($data);
     }
 
     public function update($id, array $data)
     {
-        return $this->repo->update($id, $data);
-    }
+        if (isset($data['image']) && $data['image'] instanceof \Illuminate\Http\UploadedFile) {
+            $data['image'] = $this->cloudinaryService->upload($data['image']);
+        }
 
-    public function delete($id)
-    {
-        return $this->repo->delete($id);
+        return $this->skillRepository->update($id, $data);
     }
 }

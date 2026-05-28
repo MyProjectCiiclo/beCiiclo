@@ -11,11 +11,6 @@ class SkillRepository
         return SkillModel::all();
     }
 
-    public function findById($id)
-    {
-        return SkillModel::find($id);
-    }
-
     public function create(array $data)
     {
         return SkillModel::create($data);
