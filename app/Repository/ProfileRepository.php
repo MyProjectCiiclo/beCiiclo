@@ -16,17 +16,18 @@ class ProfileRepository
 
     public function getProfile()
     {
-        $user = Auth::user();
-
         return $this->profileModel
             ->with(['skills'])
-            ->where('user_id', $user->id)
             ->first();
     }
 
     public function updateProfile(array $data)
     {
         $user = Auth::user();
+
+        if (!$user) {
+            throw new \Exception('Unauthenticated user');
+        }
 
         $profile = ProfileModel::firstOrCreate([
             'user_id' => $user->id,
@@ -35,6 +36,6 @@ class ProfileRepository
         $profile->fill($data);
         $profile->save();
 
-        return $profile;
+        return $profile->load(['skills']);
     }
 }
