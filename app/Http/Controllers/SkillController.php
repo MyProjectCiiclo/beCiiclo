@@ -20,17 +20,6 @@ class SkillController extends Controller
         ]);
     }
 
-    public function show($id)
-    {
-        $skill = $this->service->getById($id);
-
-        if (!$skill) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-
-        return response()->json(['data' => $skill]);
-    }
-
     public function store(Request $request)
     {
         $request->validate([
