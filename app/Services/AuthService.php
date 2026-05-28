@@ -13,24 +13,15 @@ class AuthService
     {
         $this->authRepository = $authRepository;
     }
-
     public function login(array $data)
     {
-        if (
-            $data['email'] === env('ADMIN_EMAIL') &&
-            $data['password'] === env('ADMIN_PASSWORD')
-        ) {
+        $user = $this->authRepository->findByEmail($data['email']);
 
-            $user = $this->authRepository->findByEmail($data['email']);
-
-            if (!$user || !Hash::check($data['password'], $user->password)) {
-                return false;
-            }
-
-            return $user->createToken('api-token')->plainTextToken;
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            return false;
         }
 
-        return false;
+        return $user->createToken('api-token')->plainTextToken;
     }
 
     public function getUser()
