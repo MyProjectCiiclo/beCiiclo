@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repository\AuthRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService
@@ -31,12 +32,17 @@ class AuthService
 
     public function updateUser(array $data)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (!$user) {
             return null;
         }
 
         return $this->authRepository->update($user->id, $data);
+    }
+
+    public function logout($user)
+    {
+        return $this->authRepository->logout($user);
     }
 }
