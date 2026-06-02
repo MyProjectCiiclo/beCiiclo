@@ -31,4 +31,9 @@ class AuthRepository
 
         return $user;
     }
+
+    public function logout($user)
+    {
+        $user->currentAccessToken()->delete();
+    }
 }

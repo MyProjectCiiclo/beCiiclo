@@ -20,6 +20,7 @@ Route::prefix('auth')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/update-user', [AuthController::class, 'updateUser']);
+        Route::post('/logout', [AuthController::class, 'logout']);
     });
 });
 
@@ -29,7 +30,8 @@ Route::prefix('project')->group(function () {
         Route::post('/create-project', [ProjectController::class, 'createProject']);
         Route::put('/update-project/{id}', [ProjectController::class, 'updateProject']);
         Route::delete('/destroy/{id}', [ProjectController::class, 'destroy']);
-    });});
+    });
+});
 
 Route::group([], function () {
     Route::get('/profile', [ProfileController::class, 'index']);
