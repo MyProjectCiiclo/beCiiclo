@@ -9,7 +9,7 @@ return [
     'allowed_origins' => [
         'http://localhost:5173',
         'http://localhost:3000',
-        'https://fe-ciiclo.vercel.app'
+        'https://profile-app-liart.vercel.app'
     ],
 
     'allowed_origins_patterns' => [],
