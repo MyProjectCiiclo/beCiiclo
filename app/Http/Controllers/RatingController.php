@@ -26,7 +26,7 @@ class RatingController extends Controller
 
     public function store(StoreRatingRequest $request)
     {
-        $data = $request->only(['name', 'message']);
+        $data = $request->only(['name', 'message', 'rating']);
 
         $result = $this->ratingService->createRating($data);
 
