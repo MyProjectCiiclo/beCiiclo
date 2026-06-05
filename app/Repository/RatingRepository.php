@@ -16,6 +16,7 @@ class RatingRepository
         return RatingModel::create([
             'name' => $data['name'],
             'message' => $data['message'],
+            'rating' => $data['rating'],
         ]);
     }
     public function delete($id)
