@@ -82,11 +82,13 @@ Route::prefix('courses')->group(function () {
 
 
 
-Route::get('/ratings', [RatingController::class, 'index']);
-Route::middleware('auth:sanctum')->group(function () {
-    Route::delete('/ratings/{id}', [RatingController::class, 'destroy']);
+Route::prefix('ratings')->group(function () {
+    Route::get('/', [RatingController::class, 'index']);
+    Route::post('/create-rating', [RatingController::class, 'store']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::delete('/{id}', [RatingController::class, 'destroy']);
+    });
 });
-
 
 
 Route::prefix('skills')->group(function () {

@@ -16,6 +16,10 @@ class RatingService
         return $this->ratingRepository->getAll();
     }
 
+    public function createRating($data){
+        return $this->ratingRepository->createRating($data);
+    }
+
     public function deleteRating($id)
     {
         return $this->ratingRepository->delete($id);

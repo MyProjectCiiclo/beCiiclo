@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRatingRequest;
 use App\Services\RatingService;
 
 class RatingController extends Controller
@@ -23,6 +24,17 @@ class RatingController extends Controller
         ]);
     }
 
+    public function store(StoreRatingRequest $request)
+    {
+        $data = $request->only(['name', 'message']);
+
+        $result = $this->ratingService->createRating($data);
+
+        return response()->json([
+            'success' => true,
+            'data' => $result,
+        ]);
+    }
     public function destroy($id)
     {
         $result = $this->ratingService->deleteRating($id);
